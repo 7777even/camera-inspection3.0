@@ -35,10 +35,10 @@
 
 ## 5. SyncVersion 服务 + 全局 ApiResponse (enviro-brain)
 
-- [ ] 5.1 创建 SyncVersionService，封装 nextVersion() 调用
-- [ ] 5.2 创建统一 ApiResponse<T> 响应 DTO（code、message、data）
-- [ ] 5.3 创建 SyncResponse<T> 响应 DTO（继承 ApiResponse，增加 hasMore、nextSince）
-- [ ] 5.4 编写 SyncVersionService 单元测试
+- [x] 5.1 创建 SyncVersionService，封装 nextVersion() 调用（@Transactional + @Service）
+- [x] 5.2 创建统一 ApiResponse<T> 响应 DTO（code、message、data，含 success/error 静态工厂）
+- [x] 5.3 创建 SyncResponse<T> 响应 DTO（继承 ApiResponse，增加 hasMore、nextSince，of() 静态工厂）
+- [x] 5.4 编写单元测试（4 ApiResponse + 5 SyncResponse + 2 SyncVersionService = 11 tests PASS）
 
 ## 6. 摄像头配置管理 (enviro-brain)
 
