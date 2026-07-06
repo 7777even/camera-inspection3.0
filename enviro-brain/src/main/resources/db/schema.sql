@@ -17,7 +17,7 @@ CREATE TABLE inspection_records (
     INDEX idx_batch_id (batch_id),
     INDEX idx_inspection_date (inspection_date),
     INDEX idx_sync_version (sync_version)
-) COMMENT '巡检记录主表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '巡检记录主表';
 
 -- 2. camera_results（摄像头巡检结果）
 CREATE TABLE camera_results (
@@ -36,7 +36,7 @@ CREATE TABLE camera_results (
     INDEX idx_status (status),
     INDEX idx_sync_version (sync_version),
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
-) COMMENT '摄像头巡检结果';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '摄像头巡检结果';
 
 -- 3. ledger_records（台账记录）
 CREATE TABLE ledger_records (
@@ -52,7 +52,7 @@ CREATE TABLE ledger_records (
     INDEX idx_inspection_date (inspection_date),
     INDEX idx_sync_version (sync_version),
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
-) COMMENT '巡查台账记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '巡查台账记录';
 
 -- 4. camera_config（摄像头配置）
 CREATE TABLE camera_config (
@@ -65,7 +65,7 @@ CREATE TABLE camera_config (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uk_camera_code (camera_code)
-) COMMENT '摄像头配置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '摄像头配置表';
 
 -- 5. sync_version_seq（全局同步版本序列）
 CREATE TABLE sync_version_seq (
@@ -73,6 +73,6 @@ CREATE TABLE sync_version_seq (
     next_val BIGINT NOT NULL DEFAULT 1 COMMENT '下一个版本号',
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CHECK (id = 1) COMMENT '确保只有一行'
-) COMMENT '全局同步版本序列';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '全局同步版本序列';
 
 INSERT INTO sync_version_seq (id, next_val) VALUES (1, 1);
