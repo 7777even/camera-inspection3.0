@@ -1,5 +1,7 @@
--- H2-compatible schema for testing
--- Mode: MySQL compatibility
+-- H2 兼容的数据库 Schema（用于测试）
+-- 使用 H2 的 MySQL 兼容模式：MODE=MYSQL
+
+-- 1. inspection_records（巡检记录主表）
 CREATE TABLE inspection_records (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     batch_id VARCHAR(64) NOT NULL,
@@ -11,12 +13,14 @@ CREATE TABLE inspection_records (
     status VARCHAR(20) NOT NULL DEFAULT 'RUNNING',
     sync_version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_batch_id (batch_id),
-    INDEX idx_inspection_date (inspection_date),
-    INDEX idx_sync_version (sync_version)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX idx_batch_id ON inspection_records(batch_id);
+CREATE INDEX idx_inspection_date ON inspection_records(inspection_date);
+CREATE INDEX idx_sync_version ON inspection_records(sync_version);
+
+-- 2. camera_results（摄像头巡检结果）
 CREATE TABLE camera_results (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     record_id BIGINT NOT NULL,
@@ -28,13 +32,15 @@ CREATE TABLE camera_results (
     error_message VARCHAR(512),
     sync_version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_record_id (record_id),
-    INDEX idx_camera_code (camera_code),
-    INDEX idx_status (status),
-    INDEX idx_sync_version (sync_version),
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
 );
 
+CREATE INDEX idx_record_id ON camera_results(record_id);
+CREATE INDEX idx_camera_code ON camera_results(camera_code);
+CREATE INDEX idx_status ON camera_results(status);
+CREATE INDEX idx_sync_version ON camera_results(sync_version);
+
+-- 3. ledger_records（台账记录）
 CREATE TABLE ledger_records (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     record_id BIGINT NOT NULL,
@@ -44,28 +50,32 @@ CREATE TABLE ledger_records (
     sync_version BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_record_id (record_id),
-    INDEX idx_inspection_date (inspection_date),
-    INDEX idx_sync_version (sync_version),
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
 );
 
+CREATE INDEX idx_record_id ON ledger_records(record_id);
+CREATE INDEX idx_inspection_date ON ledger_records(inspection_date);
+CREATE INDEX idx_sync_version ON ledger_records(sync_version);
+
+-- 4. camera_config（摄像头配置）
 CREATE TABLE camera_config (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     camera_code VARCHAR(64) NOT NULL,
     camera_name VARCHAR(128) NOT NULL,
     rtsp_url VARCHAR(512),
     location VARCHAR(256),
-    enabled TINYINT NOT NULL DEFAULT 1,
+    enabled INT NOT NULL DEFAULT 1,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (camera_code)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE UNIQUE INDEX uk_camera_code ON camera_config(camera_code);
+
+-- 5. sync_version_seq（全局同步版本序列）
 CREATE TABLE sync_version_seq (
     id INT PRIMARY KEY DEFAULT 1,
     next_val BIGINT NOT NULL DEFAULT 1,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CHECK (id = 1)
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
 INSERT INTO sync_version_seq (id, next_val) VALUES (1, 1);
