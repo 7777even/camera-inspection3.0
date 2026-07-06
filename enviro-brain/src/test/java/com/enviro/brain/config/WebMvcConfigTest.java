@@ -33,7 +33,7 @@ class WebMvcConfigTest {
 
         @RestController
         static class SyncTestController {
-            @GetMapping("/api/v1/sync/watermark")
+            @GetMapping("/api/v1/test/watermark")
             public ResponseEntity<Map<String, String>> watermark() {
                 return ResponseEntity.ok(Map.of("status", "ok"));
             }
@@ -43,7 +43,7 @@ class WebMvcConfigTest {
     @Test
     @DisplayName("有效 API Key 请求 /api/** → 200")
     void validApiKey_shouldReturn200() throws Exception {
-        mockMvc.perform(get("/api/v1/sync/watermark")
+        mockMvc.perform(get("/api/v1/test/watermark")
                         .header("X-API-Key", "integration-test-key"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("ok"));
@@ -52,7 +52,7 @@ class WebMvcConfigTest {
     @Test
     @DisplayName("缺少 API Key 请求 /api/** → 401")
     void missingApiKey_shouldReturn401() throws Exception {
-        mockMvc.perform(get("/api/v1/sync/watermark"))
+        mockMvc.perform(get("/api/v1/test/watermark"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Missing X-API-Key header")));
     }
@@ -60,7 +60,7 @@ class WebMvcConfigTest {
     @Test
     @DisplayName("无效 API Key 请求 /api/** → 401")
     void invalidApiKey_shouldReturn401() throws Exception {
-        mockMvc.perform(get("/api/v1/sync/watermark")
+        mockMvc.perform(get("/api/v1/test/watermark")
                         .header("X-API-Key", "wrong-key"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Invalid API Key")));

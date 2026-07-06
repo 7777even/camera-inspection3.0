@@ -27,4 +27,8 @@ public interface SyncVersionMapper {
     /** 查询当前 next_val 并锁定行（用于并发控制） */
     @Select("SELECT next_val FROM sync_version_seq WHERE id = 1 FOR UPDATE")
     Long getNextVersionForUpdate();
+
+    /** 查询当前 next_val（不加锁，用于 watermark 查询） */
+    @Select("SELECT next_val FROM sync_version_seq WHERE id = 1")
+    Long getCurrentVersion();
 }

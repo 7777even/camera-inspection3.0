@@ -47,4 +47,30 @@ class SyncVersionServiceTest {
             verify(syncVersionMapper).nextVersion();
         }
     }
+
+    @Nested
+    @DisplayName("getWatermark()")
+    class GetWatermark {
+
+        @Test
+        @DisplayName("should return current version minus one as watermark")
+        void shouldReturnCurrentVersionMinusOne() {
+            when(syncVersionMapper.getCurrentVersion()).thenReturn(10L);
+
+            Long watermark = syncVersionService.getWatermark();
+
+            assertThat(watermark).isEqualTo(9L);
+            verify(syncVersionMapper).getCurrentVersion();
+        }
+
+        @Test
+        @DisplayName("should return zero when current version is one")
+        void shouldReturnZeroWhenCurrentVersionIsOne() {
+            when(syncVersionMapper.getCurrentVersion()).thenReturn(1L);
+
+            Long watermark = syncVersionService.getWatermark();
+
+            assertThat(watermark).isZero();
+        }
+    }
 }

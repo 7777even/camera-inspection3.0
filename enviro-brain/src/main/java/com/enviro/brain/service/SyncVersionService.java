@@ -19,4 +19,13 @@ public class SyncVersionService {
     public Long nextVersion() {
         return syncVersionMapper.nextVersion();
     }
+
+    /**
+     * 获取当前水位（最大已分配版本号）。
+     * 返回 next_val - 1，即当前已分配的最大版本号。
+     * 初始状态 next_val=1 时返回 0，表示尚无任何数据被同步版本标记。
+     */
+    public Long getWatermark() {
+        return syncVersionMapper.getCurrentVersion() - 1;
+    }
 }

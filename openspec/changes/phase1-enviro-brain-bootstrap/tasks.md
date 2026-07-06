@@ -51,12 +51,12 @@
 
 ## 7. 数据同步接口 (enviro-brain)
 
-- [ ] 7.1 创建 SyncController（GET /api/v1/sync/watermark）
-- [ ] 7.2 实现 GET /api/v1/sync/inspections?since=&limit= 增量分页查询
-- [ ] 7.3 实现 GET /api/v1/sync/camera-results?since=&limit= 增量分页查询
-- [ ] 7.4 实现 GET /api/v1/sync/ledger-records?since=&limit= 增量分页查询
-- [ ] 7.5 实现 limit 参数默认值 1000、最大值 5000 的校验
-- [ ] 7.6 编写集成测试
+- [x] 7.1 创建 SyncController（GET /api/v1/sync/watermark）
+- [x] 7.2 实现 GET /api/v1/sync/inspections?since=&limit= 增量分页查询
+- [x] 7.3 实现 GET /api/v1/sync/camera-results?since=&limit= 增量分页查询
+- [x] 7.4 实现 GET /api/v1/sync/ledger-records?since=&limit= 增量分页查询
+- [x] 7.5 实现 limit 参数默认值 1000、最大值 5000 的校验
+- [x] 7.6 编写集成测试
 
 ## 8. 全局异常处理 + 集成验证 (enviro-brain)
 
