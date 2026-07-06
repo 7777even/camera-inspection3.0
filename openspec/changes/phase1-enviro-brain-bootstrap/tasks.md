@@ -72,3 +72,20 @@
 - [x] 9.1 更新 `.gitignore`（加入 target/、*.class、*.jar、application-dev.yml 等）
 - [x] 9.2 Git 提交：`git add enviro-brain/ && git commit -m "feat: Phase 1 - enviro brain bootstrap"`
 - [ ] 9.3 推送到 GitHub
+
+---
+
+## Phase 2: 环保小脑巡检核心
+
+- [x] 2.1 复制 Python camera_capture.py + capture.py 到 enviro-brain/scripts/
+- [x] 2.2 复制 DOCX 台账模板到 enviro-brain/templates/
+- [x] 2.3 新增配置项（海康、Python、截图、台账、飞书、鹊桥）
+- [x] 2.4 CameraCaptureResult DTO（状态、质量评分、截图路径）
+- [x] 2.5 CaptureService（ProcessBuilder 调 Python 截图 + JSON 解析）
+- [x] 2.6 FeishuNotifyService（飞书 Webhook 卡片推送）
+- [x] 2.7 LedgerService（台账生成 + ledger_records 写入）
+- [x] 2.8 InspectionService 核心编排（并发截图 + 汇总统计 + 台账 + 通知）
+- [x] 2.9 InspectionScheduler（@Scheduled 每小时自动巡检）
+- [x] 2.10 InspectionController（POST /trigger 手动触发）
+- [x] 2.11 QueqiaoNotifyService（可选：巡检完成回调鹊桥）
+- [x] 2.12 全量 118 tests PASS + Maven package BUILD SUCCESS
