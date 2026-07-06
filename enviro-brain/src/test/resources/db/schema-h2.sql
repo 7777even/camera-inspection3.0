@@ -1,5 +1,6 @@
 -- H2 兼容的数据库 Schema（用于测试）
 -- 使用 H2 的 MySQL 兼容模式：MODE=MYSQL
+-- 注意：H2 要求索引名全局唯一
 
 -- 1. inspection_records（巡检记录主表）
 CREATE TABLE inspection_records (
@@ -16,9 +17,9 @@ CREATE TABLE inspection_records (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_batch_id ON inspection_records(batch_id);
-CREATE INDEX idx_inspection_date ON inspection_records(inspection_date);
-CREATE INDEX idx_sync_version ON inspection_records(sync_version);
+CREATE INDEX idx_ir_batch_id ON inspection_records(batch_id);
+CREATE INDEX idx_ir_inspection_date ON inspection_records(inspection_date);
+CREATE INDEX idx_ir_sync_version ON inspection_records(sync_version);
 
 -- 2. camera_results（摄像头巡检结果）
 CREATE TABLE camera_results (
@@ -35,10 +36,10 @@ CREATE TABLE camera_results (
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
 );
 
-CREATE INDEX idx_record_id ON camera_results(record_id);
-CREATE INDEX idx_camera_code ON camera_results(camera_code);
-CREATE INDEX idx_status ON camera_results(status);
-CREATE INDEX idx_sync_version ON camera_results(sync_version);
+CREATE INDEX idx_cr_record_id ON camera_results(record_id);
+CREATE INDEX idx_cr_camera_code ON camera_results(camera_code);
+CREATE INDEX idx_cr_status ON camera_results(status);
+CREATE INDEX idx_cr_sync_version ON camera_results(sync_version);
 
 -- 3. ledger_records（台账记录）
 CREATE TABLE ledger_records (
@@ -53,9 +54,9 @@ CREATE TABLE ledger_records (
     FOREIGN KEY (record_id) REFERENCES inspection_records(id)
 );
 
-CREATE INDEX idx_record_id ON ledger_records(record_id);
-CREATE INDEX idx_inspection_date ON ledger_records(inspection_date);
-CREATE INDEX idx_sync_version ON ledger_records(sync_version);
+CREATE INDEX idx_lr_record_id ON ledger_records(record_id);
+CREATE INDEX idx_lr_inspection_date ON ledger_records(inspection_date);
+CREATE INDEX idx_lr_sync_version ON ledger_records(sync_version);
 
 -- 4. camera_config（摄像头配置）
 CREATE TABLE camera_config (

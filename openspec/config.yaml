@@ -1,20 +1,57 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+# Project context — 环保危废仓库摄像头自动巡检系统 v3.0
+context: |
+  ## 项目概述
+  环保危废仓库摄像头自动巡检系统 v3.0，三层架构：
+  1. 环保小脑（Java Spring Boot）：每小时定时巡检、截图、质量判定、入库、飞书通知
+  2. 鹊桥平台（数据同步 + MCP）：从环保小脑同步增量数据到自有数据库，封装 MCP 工具供脑机端查询
+  3. 脑机桌面端：自然语言查询，仅通过鹊桥 MCP 获取数据，不直接访问环保小脑
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  ## 技术栈
+  - **环保小脑**: Java 17+, Spring Boot 3.x, MyBatis, MySQL 8.x, Apache POI, RestTemplate
+  - **截图脚本**: Python 3, OpenCV, requests (由 Java ProcessBuilder 调用)
+  - **鹊桥同步层**: Java Spring Boot, 定时拉取增量数据, 自有 MySQL/PostgreSQL
+  - **鹊桥 MCP 层**: MCP 协议封装, 查询类从自有数据库响应, 操作类转发环保小脑
+  - **外部依赖**: 海康 Artemis API, 飞书 Webhook, RTSP 流
+  - **认证**: API Key (X-API-Key Header)
+
+  ## 项目结构
+  - `enviro-brain/` — 环保小脑 Spring Boot 项目（定时巡检 + 数据同步接口）
+  - `queqiao/` — 鹊桥平台（同步调度 + MCP Server）
+  - `scripts/` — Python 截图脚本
+  - `docs/` — 方案文档
+  - `openspec/` — OpenSpec 规范与变更管理
+
+  ## 核心数据流
+  - 写路径：环保小脑自治（定时 → 截图 → 入库 → 台账 → 飞书）
+  - 同步路径：鹊桥每 30min 拉环保小脑增量数据（sync_version 水位）
+  - 读路径：脑机端 → 鹊桥 MCP → 鹊桥自有数据库（不穿透环保小脑）
+  - 操作路径：脑机端 → 鹊桥 MCP 转发 → 环保小脑执行
+
+  ## 数据表
+  - 环保小脑 MySQL: inspection_records, camera_results, ledger_records, sync_version_seq
+  - 鹊桥自有数据库: synced_inspection_records, synced_camera_results, synced_ledger_records, sync_watermark
+
+  ## 开发约定
+  - 所有开发必须遵循 Superpowers 流程（brainstorming → plan → TDD → execute → review → verify）
+  - 使用 OpenSpec 管理变更：propose → explore → apply → sync → archive
+  - 代码注释和文档使用中文
+  - Git 提交使用 conventional commits 格式
+  - 数据库表名和字段名使用 snake_case
+  - Java 类名使用 PascalCase，方法名使用 camelCase
+
+# Per-artifact rules
+rules:
+  proposal:
+    - 提案需包含架构影响分析（环保小脑 / 鹊桥 / 脑机端三层是否受影响）
+    - 涉及数据表的变更需注明 sync_version 增量同步兼容性
+    - 涉及 API 的变更需区分：同步接口（鹊桥拉取）vs 操作转发接口
+  tasks:
+    - 每个任务拆分为可在 2 小时内完成的粒度
+    - 涉及多层的任务需标注所属层（enviro-brain / queqiao / scripts）
+    - 数据库变更任务需包含 SQL DDL 脚本
+  design:
+    - 技术方案需说明数据流向（写/同步/读/操作四条路径）
+    - 新增服务需说明容错策略（环保小脑宕机时鹊桥如何处理）
+    - API 设计需遵循 RESTful 规范，使用统一 ApiResponse 响应体
