@@ -1,0 +1,26 @@
+# Enviro Brain 主配置文件
+spring:
+  profiles:
+    active: dev
+
+# 通用配置
+server:
+  port: 8080
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.enviro.brain.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Actuator 配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

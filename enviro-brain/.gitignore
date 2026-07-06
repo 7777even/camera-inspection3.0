@@ -1,0 +1,32 @@
+# Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment config (contains sensitive data)
+application-dev.yml
+application-prod.yml
+application-test.yml
+
+# Logs
+logs/
+*.log
+
+# Maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
