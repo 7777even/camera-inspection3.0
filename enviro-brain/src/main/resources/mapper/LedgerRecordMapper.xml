@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enviro.brain.mapper.LedgerRecordMapper">
+
+    <insert id="insert" parameterType="com.enviro.brain.entity.LedgerRecord"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ledger_records (
+            record_id, inspection_date, content, docx_path, sync_version
+        ) VALUES (
+            #{recordId}, #{inspectionDate}, #{content}, #{docxPath}, #{syncVersion}
+        )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.enviro.brain.entity.LedgerRecord">
+        SELECT *
+        FROM ledger_records
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByRecordId" parameterType="Long" resultType="com.enviro.brain.entity.LedgerRecord">
+        SELECT *
+        FROM ledger_records
+        WHERE record_id = #{recordId}
+        ORDER BY id ASC
+    </select>
+
+    <select id="findBySyncVersionGreaterThan" resultType="com.enviro.brain.entity.LedgerRecord">
+        SELECT *
+        FROM ledger_records
+        WHERE sync_version > #{syncVersion}
+        ORDER BY sync_version ASC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findAll" resultType="com.enviro.brain.entity.LedgerRecord">
+        SELECT *
+        FROM ledger_records
+        ORDER BY created_at DESC
+    </select>
+
+</mapper>

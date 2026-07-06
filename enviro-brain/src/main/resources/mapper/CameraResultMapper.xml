@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enviro.brain.mapper.CameraResultMapper">
+
+    <insert id="insert" parameterType="com.enviro.brain.entity.CameraResult"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO camera_results (
+            record_id, camera_code, camera_name, status, quality_score,
+            screenshot_path, error_message, sync_version
+        ) VALUES (
+            #{recordId}, #{cameraCode}, #{cameraName}, #{status}, #{qualityScore},
+            #{screenshotPath}, #{errorMessage}, #{syncVersion}
+        )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.enviro.brain.entity.CameraResult">
+        SELECT *
+        FROM camera_results
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByRecordId" parameterType="Long" resultType="com.enviro.brain.entity.CameraResult">
+        SELECT *
+        FROM camera_results
+        WHERE record_id = #{recordId}
+        ORDER BY id ASC
+    </select>
+
+    <select id="findBySyncVersionGreaterThan" resultType="com.enviro.brain.entity.CameraResult">
+        SELECT *
+        FROM camera_results
+        WHERE sync_version > #{syncVersion}
+        ORDER BY sync_version ASC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findAll" resultType="com.enviro.brain.entity.CameraResult">
+        SELECT *
+        FROM camera_results
+        ORDER BY created_at DESC
+    </select>
+
+</mapper>

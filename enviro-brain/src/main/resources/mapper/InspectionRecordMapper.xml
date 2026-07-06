@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enviro.brain.mapper.InspectionRecordMapper">
+
+    <insert id="insert" parameterType="com.enviro.brain.entity.InspectionRecord"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO inspection_records (
+            batch_id, inspection_date, total_cameras, online_count,
+            offline_count, abnormal_count, status, sync_version
+        ) VALUES (
+            #{batchId}, #{inspectionDate}, #{totalCameras}, #{onlineCount},
+            #{offlineCount}, #{abnormalCount}, #{status}, #{syncVersion}
+        )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.enviro.brain.entity.InspectionRecord">
+        SELECT *
+        FROM inspection_records
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByBatchId" parameterType="String" resultType="com.enviro.brain.entity.InspectionRecord">
+        SELECT *
+        FROM inspection_records
+        WHERE batch_id = #{batchId}
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findBySyncVersionGreaterThan" resultType="com.enviro.brain.entity.InspectionRecord">
+        SELECT *
+        FROM inspection_records
+        WHERE sync_version > #{syncVersion}
+        ORDER BY sync_version ASC
+        LIMIT #{limit}
+    </select>
+
+    <select id="findAll" resultType="com.enviro.brain.entity.InspectionRecord">
+        SELECT *
+        FROM inspection_records
+        ORDER BY created_at DESC
+    </select>
+
+</mapper>

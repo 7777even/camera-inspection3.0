@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enviro.brain.mapper.SyncVersionMapper">
+
+    <!-- 原子递增并返回新版本号 (H2 支持 RETURNING 子句) -->
+    <select id="nextVersion" resultType="java.lang.Long">
+        UPDATE sync_version_seq
+        SET next_val = next_val + 1
+        WHERE id = 1
+        RETURNING next_val;
+    </select>
+
+</mapper>

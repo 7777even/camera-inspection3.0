@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enviro.brain.mapper.CameraConfigMapper">
+
+    <insert id="insert" parameterType="com.enviro.brain.entity.CameraConfig"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO camera_config (
+            camera_code, camera_name, rtsp_url, location, enabled
+        ) VALUES (
+            #{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled}
+        )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.enviro.brain.entity.CameraConfig">
+        SELECT *
+        FROM camera_config
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByCameraCode" parameterType="String" resultType="com.enviro.brain.entity.CameraConfig">
+        SELECT *
+        FROM camera_config
+        WHERE camera_code = #{cameraCode}
+    </select>
+
+    <select id="findAll" resultType="com.enviro.brain.entity.CameraConfig">
+        SELECT *
+        FROM camera_config
+        ORDER BY id ASC
+    </select>
+
+    <update id="upsert" parameterType="com.enviro.brain.entity.CameraConfig">
+        INSERT INTO camera_config (
+            camera_code, camera_name, rtsp_url, location, enabled
+        ) VALUES (
+            #{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled}
+        )
+        ON DUPLICATE KEY UPDATE
+            camera_name = VALUES(camera_name),
+            rtsp_url = VALUES(rtsp_url),
+            location = VALUES(location),
+            enabled = VALUES(enabled),
+            updated_at = CURRENT_TIMESTAMP
+    </update>
+
+    <delete id="deleteByCameraCode" parameterType="String">
+        DELETE FROM camera_config
+        WHERE camera_code = #{cameraCode}
+    </delete>
+
+    <update id="update" parameterType="com.enviro.brain.entity.CameraConfig">
+        UPDATE camera_config
+        SET camera_name = #{cameraName},
+            rtsp_url = #{rtspUrl},
+            location = #{location},
+            enabled = #{enabled},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+</mapper>
