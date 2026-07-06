@@ -71,4 +71,4 @@
 
 - [x] 9.1 更新 `.gitignore`（加入 target/、*.class、*.jar、application-dev.yml 等）
 - [x] 9.2 Git 提交：`git add enviro-brain/ && git commit -m "feat: Phase 1 - enviro brain bootstrap"`
-- [ ] 9.3 推送到 GitHub
+- [x] 9.3 推送到 GitHub（远端 origin/main = fa75927 已包含 9 个 commit）
