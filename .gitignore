@@ -27,6 +27,16 @@ node_modules/
 # Maven local repo (build cache)
 .m2/
 
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# Sensitive config
+application-dev.yml
+
 # Environment
 .env
 .env.local
