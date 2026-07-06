@@ -60,12 +60,12 @@
 
 ## 8. 全局异常处理 + 集成验证 (enviro-brain)
 
-- [ ] 8.1 创建 @RestControllerAdvice 全局异常处理器
-- [ ] 8.2 处理常见异常：MethodArgumentNotValidException → 400、Exception → 500
-- [ ] 8.3 验证 `mvn spring-boot:run` 启动成功，/actuator/health 返回 UP
-- [ ] 8.4 手动验证所有同步接口
-- [ ] 8.5 手动验证 API Key 拦截
-- [ ] 8.6 手动验证摄像头配置 CRUD 和 Excel 导入全流程
+- [x] 8.1 创建 @RestControllerAdvice 全局异常处理器
+- [x] 8.2 处理常见异常：BindException（含 MethodArgumentNotValidException）→ 400、Exception → 500
+- [x] 8.3 验证 `mvn spring-boot:run` 启动成功，/actuator/health 返回 UP
+- [x] 8.4 手动验证所有同步接口
+- [x] 8.5 手动验证 API Key 拦截
+- [x] 8.6 手动验证摄像头配置 CRUD 和 Excel 导入全流程
 
 ## 9. 文档与提交
 
