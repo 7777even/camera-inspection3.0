@@ -18,4 +18,6 @@ public interface InspectionRecordMapper {
     List<InspectionRecord> findBySyncVersionGreaterThan(@Param("syncVersion") Long syncVersion, @Param("limit") Integer limit);
 
     List<InspectionRecord> findAll();
+
+    void updateById(InspectionRecord record);
 }

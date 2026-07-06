@@ -18,4 +18,6 @@ public interface CameraResultMapper {
     List<CameraResult> findBySyncVersionGreaterThan(@Param("syncVersion") Long syncVersion, @Param("limit") Integer limit);
 
     List<CameraResult> findAll();
+
+    void batchInsert(@Param("list") List<CameraResult> list);
 }

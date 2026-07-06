@@ -41,4 +41,14 @@
         ORDER BY created_at DESC
     </select>
 
+    <update id="updateById">
+        UPDATE inspection_records
+        SET online_count = #{onlineCount},
+            offline_count = #{offlineCount},
+            abnormal_count = #{abnormalCount},
+            status = #{status},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
 </mapper>

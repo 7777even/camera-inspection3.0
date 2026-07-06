@@ -41,4 +41,15 @@
         ORDER BY created_at DESC
     </select>
 
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO camera_results (record_id, camera_code, camera_name, status,
+            quality_score, screenshot_path, error_message, sync_version, created_at)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.recordId}, #{item.cameraCode}, #{item.cameraName}, #{item.status},
+             #{item.qualityScore}, #{item.screenshotPath}, #{item.errorMessage},
+             #{item.syncVersion}, NOW())
+        </foreach>
+    </insert>
+
 </mapper>
