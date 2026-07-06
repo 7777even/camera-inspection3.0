@@ -30,6 +30,7 @@ class InspectionServiceTest {
     @Mock private CameraResultMapper cameraResultMapper;
     @Mock private LedgerService ledgerService;
     @Mock private FeishuNotifyService feishuNotifyService;
+    @Mock private QueqiaoNotifyService queqiaoNotifyService;
 
     @InjectMocks
     private InspectionService inspectionService;

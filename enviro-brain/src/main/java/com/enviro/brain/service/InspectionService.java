@@ -29,6 +29,7 @@ public class InspectionService {
     private final CameraResultMapper cameraResultMapper;
     private final LedgerService ledgerService;
     private final FeishuNotifyService feishuNotifyService;
+    private final QueqiaoNotifyService queqiaoNotifyService;
 
     /**
      * 执行一次完整巡检。
@@ -137,6 +138,13 @@ public class InspectionService {
             feishuNotifyService.sendInspectionReport(record, results);
         } catch (Exception e) {
             log.error("[Inspection] 飞书通知异常: {}", e.getMessage());
+        }
+
+        // ⑨ 鹊桥回调（可选）
+        try {
+            queqiaoNotifyService.notifyNewData(syncVersion);
+        } catch (Exception e) {
+            log.error("[Inspection] 鹊桥回调异常: {}", e.getMessage());
         }
 
         log.info("[Inspection] 巡检完成: 在线{} 离线{} 异常{}", online, offline, abnormal);
