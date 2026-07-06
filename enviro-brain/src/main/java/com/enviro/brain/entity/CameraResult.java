@@ -17,6 +17,6 @@ public class CameraResult implements HasSyncVersion {
     private BigDecimal qualityScore;
     private String screenshotPath;
     private String errorMessage;
-    private Long syncVersion;
+    private Long syncVersion = 0L;
     private LocalDateTime createdAt;
 }

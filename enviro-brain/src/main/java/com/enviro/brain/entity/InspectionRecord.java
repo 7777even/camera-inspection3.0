@@ -17,7 +17,7 @@ public class InspectionRecord implements HasSyncVersion {
     private Integer offlineCount;
     private Integer abnormalCount;
     private String status;
-    private Long syncVersion;
+    private Long syncVersion = 0L;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

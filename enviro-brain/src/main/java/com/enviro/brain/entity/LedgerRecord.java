@@ -14,7 +14,7 @@ public class LedgerRecord implements HasSyncVersion {
     private LocalDate inspectionDate;
     private String content;
     private String docxPath;
-    private Long syncVersion;
+    private Long syncVersion = 0L;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
