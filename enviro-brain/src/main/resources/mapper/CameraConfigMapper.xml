@@ -30,19 +30,11 @@
         ORDER BY id ASC
     </select>
 
-    <update id="upsert" parameterType="com.enviro.brain.entity.CameraConfig">
-        INSERT INTO camera_config (
-            camera_code, camera_name, rtsp_url, location, enabled
-        ) VALUES (
-            #{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled}
-        )
-        ON DUPLICATE KEY UPDATE
-            camera_name = VALUES(camera_name),
-            rtsp_url = VALUES(rtsp_url),
-            location = VALUES(location),
-            enabled = VALUES(enabled),
-            updated_at = CURRENT_TIMESTAMP
-    </update>
+    <insert id="upsert" parameterType="com.enviro.brain.entity.CameraConfig">
+        MERGE INTO camera_config (camera_code, camera_name, rtsp_url, location, enabled)
+        KEY (camera_code)
+        VALUES (#{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled})
+    </insert>
 
     <delete id="deleteByCameraCode" parameterType="String">
         DELETE FROM camera_config

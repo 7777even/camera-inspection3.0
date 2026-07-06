@@ -27,6 +27,6 @@ class InspectionRecordTest {
     @Test
     void should_implement_HasSyncVersion() {
         HasSyncVersion obj = new InspectionRecord();
-        assertNull(obj.getSyncVersion());
+        assertEquals(0L, obj.getSyncVersion());
     }
 }

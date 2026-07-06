@@ -24,6 +24,6 @@ class CameraResultTest {
     @Test
     void should_implement_HasSyncVersion() {
         HasSyncVersion obj = new CameraResult();
-        assertNull(obj.getSyncVersion());
+        assertEquals(0L, obj.getSyncVersion());
     }
 }

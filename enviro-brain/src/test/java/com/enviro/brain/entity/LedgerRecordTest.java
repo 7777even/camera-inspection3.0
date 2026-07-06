@@ -23,6 +23,6 @@ class LedgerRecordTest {
     @Test
     void should_implement_HasSyncVersion() {
         HasSyncVersion obj = new LedgerRecord();
-        assertNull(obj.getSyncVersion());
+        assertEquals(0L, obj.getSyncVersion());
     }
 }
