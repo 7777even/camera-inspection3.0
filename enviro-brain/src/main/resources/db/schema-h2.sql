@@ -74,7 +74,7 @@ CREATE UNIQUE INDEX uk_camera_code ON camera_config(camera_code);
 
 -- 5. sync_version_seq（全局同步版本序列）
 CREATE TABLE sync_version_seq (
-    id INT PRIMARY KEY DEFAULT 1,
+    id INT DEFAULT 1 PRIMARY KEY,
     next_val BIGINT NOT NULL DEFAULT 1,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
