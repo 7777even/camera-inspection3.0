@@ -59,6 +59,8 @@ CREATE TABLE camera_config (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     camera_code VARCHAR(64) NOT NULL COMMENT '摄像头编码（唯一）',
     camera_name VARCHAR(128) NOT NULL COMMENT '摄像头名称',
+    enterprise VARCHAR(128) COMMENT '所属企业',
+    artemis_device_id VARCHAR(128) COMMENT '海康Artemis设备ID',
     rtsp_url VARCHAR(512) COMMENT 'RTSP流地址',
     location VARCHAR(256) COMMENT '安装位置',
     enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用: 1-启用, 0-禁用',

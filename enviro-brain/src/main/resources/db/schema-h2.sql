@@ -63,6 +63,8 @@ CREATE TABLE camera_config (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     camera_code VARCHAR(64) NOT NULL,
     camera_name VARCHAR(128) NOT NULL,
+    enterprise VARCHAR(128),
+    artemis_device_id VARCHAR(128),
     rtsp_url VARCHAR(512),
     location VARCHAR(256),
     enabled INT NOT NULL DEFAULT 1,

@@ -17,6 +17,10 @@ public interface CameraConfigMapper {
 
     List<CameraConfig> findAll();
 
+    List<CameraConfig> findActive(@Param("offset") int offset, @Param("size") int size);
+
+    int countActive();
+
     int upsert(CameraConfig config);
 
     int deleteByCameraCode(@Param("cameraCode") String cameraCode);

@@ -42,12 +42,12 @@
 
 ## 6. 摄像头配置管理 (enviro-brain)
 
-- [ ] 6.1 创建 CameraConfigController（GET /api/v1/cameras 分页查询）
-- [ ] 6.2 实现 GET /api/v1/cameras/{cameraCode} 单项查询
-- [ ] 6.3 实现 POST /api/v1/cameras/import Excel 导入（POI 解析 + 批量 upsert）
-- [ ] 6.4 实现 GET /api/v1/cameras/template 模板下载
-- [ ] 6.5 添加文件大小限制（5MB）和格式校验
-- [ ] 6.6 编写集成测试
+- [x] 6.1 创建 CameraConfigController（GET /api/v1/cameras 分页查询，data.items + total/page/size）
+- [x] 6.2 实现 GET /api/v1/cameras/{cameraCode} 单项查询（404 时返回 ApiResponse.error）
+- [x] 6.3 实现 POST /api/v1/cameras/import Excel 导入（POI 解析 + 批量 upsert，返回 ImportResult）
+- [x] 6.4 实现 GET /api/v1/cameras/template 模板下载（XSSFWorkbook 生成含示例行模板）
+- [x] 6.5 添加文件大小限制（5MB）和格式校验（.xlsx/.xls 白名单，camera_code 必填列校验）
+- [x] 6.6 编写集成测试（9 Service + 7 Controller = 16 tests，全量 70 tests PASS）
 
 ## 7. 数据同步接口 (enviro-brain)
 

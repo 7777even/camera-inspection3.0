@@ -12,6 +12,8 @@ public class CameraConfig {
     private Long id;
     private String cameraCode;
     private String cameraName;
+    private String enterprise;
+    private String artemisDeviceId;
     private String rtspUrl;
     private String location;
     private Integer enabled;

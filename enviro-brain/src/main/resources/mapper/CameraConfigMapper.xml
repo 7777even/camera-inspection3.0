@@ -6,9 +6,9 @@
     <insert id="insert" parameterType="com.enviro.brain.entity.CameraConfig"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO camera_config (
-            camera_code, camera_name, rtsp_url, location, enabled
+            camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled
         ) VALUES (
-            #{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled}
+            #{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled}
         )
     </insert>
 
@@ -31,9 +31,9 @@
     </select>
 
     <insert id="upsert" parameterType="com.enviro.brain.entity.CameraConfig">
-        MERGE INTO camera_config (camera_code, camera_name, rtsp_url, location, enabled)
+        MERGE INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled)
         KEY (camera_code)
-        VALUES (#{cameraCode}, #{cameraName}, #{rtspUrl}, #{location}, #{enabled})
+        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled})
     </insert>
 
     <delete id="deleteByCameraCode" parameterType="String">
@@ -44,11 +44,27 @@
     <update id="update" parameterType="com.enviro.brain.entity.CameraConfig">
         UPDATE camera_config
         SET camera_name = #{cameraName},
+            enterprise = #{enterprise},
+            artemis_device_id = #{artemisDeviceId},
             rtsp_url = #{rtspUrl},
             location = #{location},
             enabled = #{enabled},
             updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
+
+    <select id="findActive" resultType="com.enviro.brain.entity.CameraConfig">
+        SELECT *
+        FROM camera_config
+        WHERE enabled = 1
+        ORDER BY id ASC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="countActive" resultType="int">
+        SELECT COUNT(*)
+        FROM camera_config
+        WHERE enabled = 1
+    </select>
 
 </mapper>
