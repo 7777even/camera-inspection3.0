@@ -30,18 +30,18 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.enviro.brain.entity.CameraConfigTest
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.070 s -- in com.enviro.brain.entity.CameraConfigTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 s -- in com.enviro.brain.entity.CameraConfigTest
 [INFO] Running com.enviro.brain.entity.CameraResultTest
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.enviro.brain.entity.CameraResultTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.enviro.brain.entity.CameraResultTest
 [INFO] Running com.enviro.brain.entity.HasSyncVersionTest
 [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.enviro.brain.entity.HasSyncVersionTest
 [INFO] Running com.enviro.brain.entity.InspectionRecordTest
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.enviro.brain.entity.InspectionRecordTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.enviro.brain.entity.InspectionRecordTest
 [INFO] Running com.enviro.brain.entity.LedgerRecordTest
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.enviro.brain.entity.LedgerRecordTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in com.enviro.brain.entity.LedgerRecordTest
 [INFO] Running com.enviro.brain.mapper.CameraConfigMapperTest
-11:52:12.995 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.enviro.brain.mapper.CameraConfigMapperTest]: CameraConfigMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-11:52:13.232 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.CameraConfigMapperTest
+11:52:59.736 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.enviro.brain.mapper.CameraConfigMapperTest]: CameraConfigMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+11:52:59.900 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.CameraConfigMapperTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -52,12 +52,12 @@
 
  :: Spring Boot ::                (v3.3.5)
 
-2026-07-06T11:52:13.867+08:00  INFO 33668 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : Starting CameraConfigMapperTest using Java 17.0.12 with PID 33668 (started by 7even in D:\gkproject\camera-inspection3.0\enviro-brain)
-2026-07-06T11:52:13.870+08:00  INFO 33668 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : The following 1 profile is active: "test"
-2026-07-06T11:52:14.510+08:00  INFO 33668 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
-2026-07-06T11:52:15.101+08:00  INFO 33668 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
+2026-07-06T11:53:00.505+08:00  INFO 31388 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : Starting CameraConfigMapperTest using Java 17.0.12 with PID 31388 (started by 7even in D:\gkproject\camera-inspection3.0\enviro-brain)
+2026-07-06T11:53:00.507+08:00  INFO 31388 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : The following 1 profile is active: "test"
+2026-07-06T11:53:01.091+08:00  INFO 31388 --- [           main] beddedDataSourceBeanFactoryPostProcessor : Replacing 'dataSource' DataSource bean with embedded version
+2026-07-06T11:53:01.585+08:00  INFO 31388 --- [           main] o.s.j.d.e.EmbeddedDatabaseFactory        : Starting embedded database: url='jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false', username='sa'
 Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
-2026-07-06T11:52:16.198+08:00  INFO 33668 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : Started CameraConfigMapperTest in 2.873 seconds (process running for 4.567)
+2026-07-06T11:53:02.633+08:00  INFO 31388 --- [           main] c.e.brain.mapper.CameraConfigMapperTest  : Started CameraConfigMapperTest in 2.646 seconds (process running for 3.961)
 mvn.cmd : Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstra
 p classpath has been appended
 所在位置 行:4 字符: 11
@@ -67,595 +67,589 @@ p classpath has been appended
     + FullyQualifiedErrorId : NativeCommandError
  
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7493d937]
-JDBC Connection [conn2: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12e5d3e1]
+JDBC Connection [conn2: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-CFG-001(String), 配置测试摄像头(String), rtsp://192.168.1.100:554/stream(String), 一楼大厅(String), 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7493d937]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7493d937]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7493d937]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12e5d3e1]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12e5d3e1]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12e5d3e1]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca]
-JDBC Connection [conn3: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a]
+JDBC Connection [conn3: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-FINDALL(String), findAll测试(String), rtsp://192.168.1.103:554/stream(String), null, 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a] from current transaction
 ==>  Preparing: SELECT * FROM camera_config ORDER BY id ASC
 ==> Parameters: 
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 2, CAM-FINDALL, findAll测试, rtsp://192.168.1.103:554/stream, null, 1, 2026-07-06 11:52:17.46052, 2026-07-06 11:52:17.46052
+<==        Row: 2, CAM-FINDALL, findAll测试, rtsp://192.168.1.103:554/stream, null, 1, 2026-07-06 11:53:03.890909, 2026-07-06 11:53:03.890909
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5817f1ca]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@9205c0a]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
-JDBC Connection [conn4: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
+JDBC Connection [conn4: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-UPDATE-001(String), 更新前(String), rtsp://192.168.1.400:554/stream(String), 五楼(String), 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f] from current transaction
 ==>  Preparing: UPDATE camera_config SET camera_name = ?, rtsp_url = ?, location = ?, enabled = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
 ==> Parameters: 更新后(String), rtsp://192.168.1.400:554/stream(String), 五楼-新位置(String), 0(Integer), 3(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-UPDATE-001(String)
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 3, CAM-UPDATE-001, 更新后, rtsp://192.168.1.400:554/stream, 五楼-新位置, 0, 2026-07-06 11:52:17.513703, 2026-07-06 11:52:17.513703
+<==        Row: 3, CAM-UPDATE-001, 更新后, rtsp://192.168.1.400:554/stream, 五楼-新位置, 0, 2026-07-06 11:53:03.945916, 2026-07-06 11:53:03.945916
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d3cce46]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@145e958f]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
-JDBC Connection [conn5: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
+JDBC Connection [conn5: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-DELETE-001(String), 待删除(String), rtsp://192.168.1.300:554/stream(String), null, 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677] from current transaction
 ==>  Preparing: DELETE FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-DELETE-001(String)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-DELETE-001(String)
 <==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a9bce99]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5c839677]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
-JDBC Connection [conn6: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
+JDBC Connection [conn6: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-UPSERT-002(String), Upsert原始(String), rtsp://192.168.1.201:554/stream(String), 四楼走廊(String), 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452] from current transaction
 ==>  Preparing: MERGE INTO camera_config (camera_code, camera_name, rtsp_url, location, enabled) KEY (camera_code) VALUES (?, ?, ?, ?, ?)
 ==> Parameters: CAM-UPSERT-002(String), Upsert更新后(String), rtsp://192.168.1.201:554/new-stream(String), 四楼走廊-新位置(String), 0(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-UPSERT-002(String)
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 5, CAM-UPSERT-002, Upsert更新后, rtsp://192.168.1.201:554/new-stream, 四楼走廊-新位置, 0, 2026-07-06 11:52:17.541708, 2026-07-06 11:52:17.541708
+<==        Row: 5, CAM-UPSERT-002, Upsert更新后, rtsp://192.168.1.201:554/new-stream, 四楼走廊-新位置, 0, 2026-07-06 11:53:03.97891, 2026-07-06 11:53:03.97891
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4be12f6c]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@44eb2452]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6]
-JDBC Connection [conn7: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1]
+JDBC Connection [conn7: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: MERGE INTO camera_config (camera_code, camera_name, rtsp_url, location, enabled) KEY (camera_code) VALUES (?, ?, ?, ?, ?)
 ==> Parameters: CAM-UPSERT-001(String), Upsert新增(String), rtsp://192.168.1.200:554/stream(String), 三楼会议室(String), 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-UPSERT-001(String)
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 6, CAM-UPSERT-001, Upsert新增, rtsp://192.168.1.200:554/stream, 三楼会议室, 1, 2026-07-06 11:52:17.551705, 2026-07-06 11:52:17.551705
+<==        Row: 6, CAM-UPSERT-001, Upsert新增, rtsp://192.168.1.200:554/stream, 三楼会议室, 1, 2026-07-06 11:53:03.990915, 2026-07-06 11:53:03.990915
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@218df7d6]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6be766d1]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1]
-JDBC Connection [conn8: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186]
+JDBC Connection [conn8: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-CFG-002(String), 查找测试(String), rtsp://192.168.1.101:554/stream(String), 二楼办公室(String), 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE id = ?
 ==> Parameters: 7(Long)
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 7, CAM-CFG-002, 查找测试, rtsp://192.168.1.101:554/stream, 二楼办公室, 1, 2026-07-06 11:52:17.557703, 2026-07-06 11:52:17.557703
+<==        Row: 7, CAM-CFG-002, 查找测试, rtsp://192.168.1.101:554/stream, 二楼办公室, 1, 2026-07-06 11:53:03.99991, 2026-07-06 11:53:03.99991
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20864cd1]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5a48d186]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704]
-JDBC Connection [conn9: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8]
+JDBC Connection [conn9: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO camera_config ( camera_code, camera_name, rtsp_url, location, enabled ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: CAM-UNIQUE-001(String), 唯一编码测试(String), rtsp://192.168.1.102:554/stream(String), null, 1(Integer)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8] from current transaction
 ==>  Preparing: SELECT * FROM camera_config WHERE camera_code = ?
 ==> Parameters: CAM-UNIQUE-001(String)
 <==    Columns: ID, CAMERA_CODE, CAMERA_NAME, RTSP_URL, LOCATION, ENABLED, CREATED_AT, UPDATED_AT
-<==        Row: 8, CAM-UNIQUE-001, 唯一编码测试, rtsp://192.168.1.102:554/stream, null, 1, 2026-07-06 11:52:17.565702, 2026-07-06 11:52:17.565702
+<==        Row: 8, CAM-UNIQUE-001, 唯一编码测试, rtsp://192.168.1.102:554/stream, null, 1, 2026-07-06 11:53:04.010916, 2026-07-06 11:53:04.010916
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31940704]
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.895 s -- in com.enviro.brain.mapper.CameraConfigMapperTest
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4eb63dc8]
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.520 s -- in com.enviro.brain.mapper.CameraConfigMapperTest
 [INFO] Running com.enviro.brain.mapper.CameraResultMapperTest
-2026-07-06T11:52:17.577+08:00  INFO 33668 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.CameraResultMapperTest]: CameraResultMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-07-06T11:52:17.589+08:00  INFO 33668 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.CameraResultMapperTest
+2026-07-06T11:53:04.023+08:00  INFO 31388 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.CameraResultMapperTest]: CameraResultMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-06T11:53:04.035+08:00  INFO 31388 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.CameraResultMapperTest
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
-JDBC Connection [conn10: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
+JDBC Connection [conn10: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-TEST-11124500804700(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-TEST-11170949464800(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583] from current transaction
 ==>  Preparing: INSERT INTO camera_results ( record_id, camera_code, camera_name, status, quality_score, screenshot_path, error_message, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: 1(Long), CAM-002(String), 摄像头002(String), OFFLINE(String), 0.00(BigDecimal), null, Connection timeout(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583] from current transaction
 ==>  Preparing: SELECT * FROM camera_results WHERE id = ?
 ==> Parameters: 1(Long)
 <==    Columns: ID, RECORD_ID, CAMERA_CODE, CAMERA_NAME, STATUS, QUALITY_SCORE, SCREENSHOT_PATH, ERROR_MESSAGE, SYNC_VERSION, CREATED_AT
-<==        Row: 1, 1, CAM-002, 摄像头002, OFFLINE, 0.00, null, Connection timeout, 0, 2026-07-06 11:52:17.598376
+<==        Row: 1, 1, CAM-002, 摄像头002, OFFLINE, 0.00, null, Connection timeout, 0, 2026-07-06 11:53:04.046912
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4ccdacf5]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2dc21583]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992]
-JDBC Connection [conn11: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0]
+JDBC Connection [conn11: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-TEST-11124516417500(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-TEST-11170963166700(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0] from current transaction
 ==>  Preparing: INSERT INTO camera_results ( record_id, camera_code, camera_name, status, quality_score, screenshot_path, error_message, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: 2(Long), CAM-001(String), 摄像头001(String), ONLINE(String), 85.50(BigDecimal), /screenshots/CAM-001-001.jpg(String), null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f26b992]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@15186ce0]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67fac095]
-JDBC Connection [conn12: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194911c1]
+JDBC Connection [conn12: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: SELECT * FROM camera_results WHERE sync_version > ? ORDER BY sync_version ASC LIMIT ?
 ==> Parameters: 0(Long), 100(Integer)
 <==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67fac095]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67fac095]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67fac095]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194911c1]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194911c1]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194911c1]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-JDBC Connection [conn13: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+JDBC Connection [conn13: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-TEST-11124533681400(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-TEST-11170983575500(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2] from current transaction
 ==>  Preparing: INSERT INTO camera_results ( record_id, camera_code, camera_name, status, quality_score, screenshot_path, error_message, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: 3(Long), CAM-003(String), 摄像头003(String), ONLINE(String), null, null, null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2] from current transaction
 ==>  Preparing: INSERT INTO camera_results ( record_id, camera_code, camera_name, status, quality_score, screenshot_path, error_message, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: 3(Long), CAM-004(String), 摄像头004(String), ABNORMAL(String), null, null, null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2] from current transaction
 ==>  Preparing: SELECT * FROM camera_results WHERE record_id = ? ORDER BY id ASC
 ==> Parameters: 3(Long)
 <==    Columns: ID, RECORD_ID, CAMERA_CODE, CAMERA_NAME, STATUS, QUALITY_SCORE, SCREENSHOT_PATH, ERROR_MESSAGE, SYNC_VERSION, CREATED_AT
-<==        Row: 3, 3, CAM-003, 摄像头003, ONLINE, null, null, null, 0, 2026-07-06 11:52:17.628375
-<==        Row: 4, 3, CAM-004, 摄像头004, ABNORMAL, null, null, null, 0, 2026-07-06 11:52:17.628375
+<==        Row: 3, 3, CAM-003, 摄像头003, ONLINE, null, null, null, 0, 2026-07-06 11:53:04.078912
+<==        Row: 4, 3, CAM-004, 摄像头004, ABNORMAL, null, null, null, 0, 2026-07-06 11:53:04.078912
 <==      Total: 2
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@786ff0ea]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46c662f2]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-JDBC Connection [conn14: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+JDBC Connection [conn14: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-TEST-11124548428700(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-TEST-11171000129500(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 1(Integer), 1(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f] from current transaction
 ==>  Preparing: INSERT INTO camera_results ( record_id, camera_code, camera_name, status, quality_score, screenshot_path, error_message, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: 4(Long), CAM-ALL(String), 摄像头ALL(String), ONLINE(String), null, null, null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f] from current transaction
 ==>  Preparing: SELECT * FROM camera_results ORDER BY created_at DESC
 ==> Parameters: 
 <==    Columns: ID, RECORD_ID, CAMERA_CODE, CAMERA_NAME, STATUS, QUALITY_SCORE, SCREENSHOT_PATH, ERROR_MESSAGE, SYNC_VERSION, CREATED_AT
-<==        Row: 5, 4, CAM-ALL, 摄像头ALL, ONLINE, null, null, null, 0, 2026-07-06 11:52:17.643373
+<==        Row: 5, 4, CAM-ALL, 摄像头ALL, ONLINE, null, null, null, 0, 2026-07-06 11:53:04.094926
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@194b9783]
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 s -- in com.enviro.brain.mapper.CameraResultMapperTest
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c77344f]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.089 s -- in com.enviro.brain.mapper.CameraResultMapperTest
 [INFO] Running com.enviro.brain.mapper.InspectionRecordMapperTest
-2026-07-06T11:52:17.656+08:00  INFO 33668 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.InspectionRecordMapperTest]: InspectionRecordMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-07-06T11:52:17.662+08:00  INFO 33668 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.InspectionRecordMapperTest
+2026-07-06T11:53:04.109+08:00  INFO 31388 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.InspectionRecordMapperTest]: InspectionRecordMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-06T11:53:04.116+08:00  INFO 31388 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.InspectionRecordMapperTest
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f]
-JDBC Connection [conn15: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317]
+JDBC Connection [conn15: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-002(String), 2026-07-06(LocalDate), 5(Integer), 4(Integer), 1(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317] from current transaction
 ==>  Preparing: SELECT * FROM inspection_records WHERE id = ?
 ==> Parameters: 5(Long)
 <==    Columns: ID, BATCH_ID, INSPECTION_DATE, TOTAL_CAMERAS, ONLINE_COUNT, OFFLINE_COUNT, ABNORMAL_COUNT, STATUS, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 5, BATCH-002, 2026-07-06, 5, 4, 1, 0, COMPLETED, 0, 2026-07-06 11:52:17.666376, 2026-07-06 11:52:17.666376
+<==        Row: 5, BATCH-002, 2026-07-06, 5, 4, 1, 0, COMPLETED, 0, 2026-07-06 11:53:04.121674, 2026-07-06 11:53:04.121674
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7757a37f]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f8317]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1d7c9811]
-JDBC Connection [conn16: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24aedcc5]
+JDBC Connection [conn16: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-001(String), 2026-07-06(LocalDate), 10(Integer), 8(Integer), 2(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1d7c9811]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1d7c9811]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1d7c9811]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24aedcc5]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24aedcc5]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24aedcc5]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4]
-JDBC Connection [conn17: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7]
+JDBC Connection [conn17: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-OLD(String), 2026-07-06(LocalDate), 1(Integer), 1(Integer), 0(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7] from current transaction
 ==>  Preparing: SELECT * FROM inspection_records WHERE sync_version > ? ORDER BY sync_version ASC LIMIT ?
 ==> Parameters: 0(Long), 10(Integer)
 <==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79cdf2d4]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@38d42ab7]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
-JDBC Connection [conn18: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
+JDBC Connection [conn18: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-ALL-1(String), 2026-07-06(LocalDate), 1(Integer), 1(Integer), 0(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3] from current transaction
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-ALL-2(String), 2026-07-06(LocalDate), 1(Integer), 1(Integer), 0(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3] from current transaction
 ==>  Preparing: SELECT * FROM inspection_records ORDER BY created_at DESC
 ==> Parameters: 
 <==    Columns: ID, BATCH_ID, INSPECTION_DATE, TOTAL_CAMERAS, ONLINE_COUNT, OFFLINE_COUNT, ABNORMAL_COUNT, STATUS, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 8, BATCH-ALL-1, 2026-07-06, 1, 1, 0, 0, COMPLETED, 0, 2026-07-06 11:52:17.690375, 2026-07-06 11:52:17.690375
-<==        Row: 9, BATCH-ALL-2, 2026-07-06, 1, 1, 0, 0, COMPLETED, 0, 2026-07-06 11:52:17.690375, 2026-07-06 11:52:17.690375
+<==        Row: 8, BATCH-ALL-1, 2026-07-06, 1, 1, 0, 0, COMPLETED, 0, 2026-07-06 11:53:04.147676, 2026-07-06 11:53:04.147676
+<==        Row: 9, BATCH-ALL-2, 2026-07-06, 1, 1, 0, 0, COMPLETED, 0, 2026-07-06 11:53:04.147676, 2026-07-06 11:53:04.147676
 <==      Total: 2
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67d5ac2f]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@464400b3]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554]
-JDBC Connection [conn19: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59]
+JDBC Connection [conn19: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
 ==> Parameters: BATCH-003(String), 2026-07-06(LocalDate), 3(Integer), 2(Integer), 1(Integer), 0(Integer), COMPLETED(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59] from current transaction
 ==>  Preparing: SELECT * FROM inspection_records WHERE batch_id = ? ORDER BY created_at DESC
 ==> Parameters: BATCH-003(String)
 <==    Columns: ID, BATCH_ID, INSPECTION_DATE, TOTAL_CAMERAS, ONLINE_COUNT, OFFLINE_COUNT, ABNORMAL_COUNT, STATUS, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 10, BATCH-003, 2026-07-06, 3, 2, 1, 0, COMPLETED, 0, 2026-07-06 11:52:17.698375, 2026-07-06 11:52:17.698375
+<==        Row: 10, BATCH-003, 2026-07-06, 3, 2, 1, 0, COMPLETED, 0, 2026-07-06 11:53:04.15867, 2026-07-06 11:53:04.15867
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42ecc554]
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in com.enviro.brain.mapper.InspectionRecordMapperTest
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@770cae59]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s -- in com.enviro.brain.mapper.InspectionRecordMapperTest
 [INFO] Running com.enviro.brain.mapper.LedgerRecordMapperTest
-2026-07-06T11:52:17.704+08:00  INFO 33668 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.LedgerRecordMapperTest]: LedgerRecordMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-07-06T11:52:17.711+08:00  INFO 33668 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.LedgerRecordMapperTest
+2026-07-06T11:53:04.166+08:00  INFO 31388 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.LedgerRecordMapperTest]: LedgerRecordMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-06T11:53:04.174+08:00  INFO 31388 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.LedgerRecordMapperTest
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
-JDBC Connection [conn20: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
+JDBC Connection [conn20: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-LEDGER-11124621206100(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-LEDGER-11171084672900(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817] from current transaction
 ==>  Preparing: INSERT INTO ledger_records ( record_id, inspection_date, content, docx_path, sync_version ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: 11(Long), 2026-07-06(LocalDate), 测试查找功能(String), /docs/ledger-find.docx(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817] from current transaction
 ==>  Preparing: SELECT * FROM ledger_records WHERE id = ?
 ==> Parameters: 1(Long)
 <==    Columns: ID, RECORD_ID, INSPECTION_DATE, CONTENT, DOCX_PATH, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 1, 11, 2026-07-06, 测试查找功能, /docs/ledger-find.docx, 0, 2026-07-06 11:52:17.716377, 2026-07-06 11:52:17.716377
+<==        Row: 1, 11, 2026-07-06, 测试查找功能, /docs/ledger-find.docx, 0, 2026-07-06 11:53:04.179676, 2026-07-06 11:53:04.179676
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@49986178]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52d9d817]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8]
-JDBC Connection [conn21: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a]
+JDBC Connection [conn21: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-LEDGER-11124631509200(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-LEDGER-11171095918700(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a] from current transaction
 ==>  Preparing: INSERT INTO ledger_records ( record_id, inspection_date, content, docx_path, sync_version ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: 12(Long), 2026-07-06(LocalDate), 测试台账内容(String), /docs/ledger-001.docx(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f106af8]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b0ed98a]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1a84a8b2]
-JDBC Connection [conn22: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1640f20f]
+JDBC Connection [conn22: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: SELECT * FROM ledger_records WHERE sync_version > ? ORDER BY sync_version ASC LIMIT ?
 ==> Parameters: 0(Long), 100(Integer)
 <==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1a84a8b2]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1a84a8b2]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1a84a8b2]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1640f20f]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1640f20f]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1640f20f]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-JDBC Connection [conn23: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+JDBC Connection [conn23: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-LEDGER-11124644112400(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-LEDGER-11171109423200(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b] from current transaction
 ==>  Preparing: INSERT INTO ledger_records ( record_id, inspection_date, content, docx_path, sync_version ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: 13(Long), 2026-07-06(LocalDate), 台账记录1(String), null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b] from current transaction
 ==>  Preparing: INSERT INTO ledger_records ( record_id, inspection_date, content, docx_path, sync_version ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: 13(Long), 2026-07-06(LocalDate), 台账记录2(String), null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b] from current transaction
 ==>  Preparing: SELECT * FROM ledger_records WHERE record_id = ? ORDER BY id ASC
 ==> Parameters: 13(Long)
 <==    Columns: ID, RECORD_ID, INSPECTION_DATE, CONTENT, DOCX_PATH, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 3, 13, 2026-07-06, 台账记录1, null, 0, 2026-07-06 11:52:17.739374, 2026-07-06 11:52:17.739374
-<==        Row: 4, 13, 2026-07-06, 台账记录2, null, 0, 2026-07-06 11:52:17.739374, 2026-07-06 11:52:17.739374
+<==        Row: 3, 13, 2026-07-06, 台账记录1, null, 0, 2026-07-06 11:53:04.204675, 2026-07-06 11:53:04.204675
+<==        Row: 4, 13, 2026-07-06, 台账记录2, null, 0, 2026-07-06 11:53:04.204675, 2026-07-06 11:53:04.204675
 <==      Total: 2
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@a1e912f]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35010a6b]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-JDBC Connection [conn24: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+JDBC Connection [conn24: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: INSERT INTO inspection_records ( batch_id, inspection_date, total_cameras, online_count, offline_count, abnormal_count, status, sync_version ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: BATCH-LEDGER-11124653885300(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
+==> Parameters: BATCH-LEDGER-11171119375000(String), 2026-07-06(LocalDate), 5(Integer), 5(Integer), 0(Integer), 0(Integer), RUNNING(String), 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750] from current transaction
 ==>  Preparing: INSERT INTO ledger_records ( record_id, inspection_date, content, docx_path, sync_version ) VALUES ( ?, ?, ?, ?, ? )
 ==> Parameters: 14(Long), 2026-07-06(LocalDate), findAll测试(String), null, 0(Long)
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750] from current transaction
 ==>  Preparing: SELECT * FROM ledger_records ORDER BY created_at DESC
 ==> Parameters: 
 <==    Columns: ID, RECORD_ID, INSPECTION_DATE, CONTENT, DOCX_PATH, SYNC_VERSION, CREATED_AT, UPDATED_AT
-<==        Row: 5, 14, 2026-07-06, findAll测试, null, 0, 2026-07-06 11:52:17.748375, 2026-07-06 11:52:17.748375
+<==        Row: 5, 14, 2026-07-06, findAll测试, null, 0, 2026-07-06 11:53:04.214671, 2026-07-06 11:53:04.214671
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7d088813]
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.050 s -- in com.enviro.brain.mapper.LedgerRecordMapperTest
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@27438750]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in com.enviro.brain.mapper.LedgerRecordMapperTest
 [INFO] Running com.enviro.brain.mapper.SyncVersionMapperTest
-2026-07-06T11:52:17.754+08:00  INFO 33668 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.SyncVersionMapperTest]: SyncVersionMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-07-06T11:52:17.760+08:00  INFO 33668 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.SyncVersionMapperTest
+2026-07-06T11:53:04.221+08:00  INFO 31388 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.enviro.brain.mapper.SyncVersionMapperTest]: SyncVersionMapperTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-07-06T11:53:04.228+08:00  INFO 31388 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.enviro.brain.EnviroBrainApplication for test class com.enviro.brain.mapper.SyncVersionMapperTest
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-JDBC Connection [conn25: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+JDBC Connection [conn25: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
+==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
+==> Parameters: 
+<==    Columns: NEXT_VAL
+<==        Row: 1
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
+==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
+==> Parameters: 
+<==    Updates: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 2
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 3
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 4
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 5
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 6
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 7
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 8
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 9
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 10
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1fd37440]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+JDBC Connection [conn26: url=jdbc:h2:mem:ba46248d-ce49-4274-96e3-3792cbffcabe user=SA] will be managed by Spring
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
-<==        Row: 11
+<==        Row: 1
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7bf65e0f]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17]
-JDBC Connection [conn26: url=jdbc:h2:mem:02547366-148b-4e32-8219-3df8f0b043c5 user=SA] will be managed by Spring
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4] from current transaction
 ==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
 ==> Parameters: 
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4] from current transaction
 ==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
 ==> Parameters: 
 <==    Columns: NEXT_VAL
 <==        Row: 2
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5423a17]
-[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.051 s <<< FAILURE! -- in com.enviro.brain.mapper.SyncVersionMapperTest
-[ERROR] com.enviro.brain.mapper.SyncVersionMapperTest.nextVersion_shouldIncrementAtomically -- Time elapsed: 0.019 s <<< FAILURE!
-org.opentest4j.AssertionFailedError: 
-
-expected: 1L
- but was: 2L
-	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-	at com.enviro.brain.mapper.SyncVersionMapperTest.nextVersion_shouldIncrementAtomically(SyncVersionMapperTest.java:21)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4] from current transaction
+==>  Preparing: UPDATE sync_version_seq SET next_val = next_val + 1 WHERE id = 1
+==> Parameters: 
+<==    Updates: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4] from current transaction
+==>  Preparing: SELECT next_val FROM sync_version_seq WHERE id = 1
+==> Parameters: 
+<==    Columns: NEXT_VAL
+<==        Row: 3
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6029f2a4]
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in com.enviro.brain.mapper.SyncVersionMapperTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[ERROR] Failures: 
-[ERROR]   SyncVersionMapperTest.nextVersion_shouldIncrementAtomically:21 
-expected: 1L
- but was: 2L
-[INFO] 
-[ERROR] Tests run: 35, Failures: 1, Errors: 0, Skipped: 0
+[INFO] Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
+[INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  13.497 s
-[INFO] Finished at: 2026-07-06T11:52:18+08:00
+[INFO] Total time:  12.003 s
+[INFO] Finished at: 2026-07-06T11:53:04+08:00
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project enviro-brain: There are test failures.
-[ERROR] 
-[ERROR] Please refer to D:\gkproject\camera-inspection3.0\enviro-brain\target\surefire-reports for the individual test results.
-[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
-[ERROR] -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
