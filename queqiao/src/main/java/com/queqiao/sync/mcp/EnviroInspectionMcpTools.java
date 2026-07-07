@@ -3,6 +3,7 @@ package com.queqiao.sync.mcp;
 import com.queqiao.sync.dto.view.CameraStatusView;
 import com.queqiao.sync.dto.view.InspectionLedgerView;
 import com.queqiao.sync.dto.view.InspectionSummaryView;
+import com.queqiao.sync.dto.view.OperationResultView;
 import com.queqiao.sync.service.EnviroInspectionForwardService;
 import com.queqiao.sync.service.EnviroInspectionQueryService;
 import lombok.RequiredArgsConstructor;
@@ -47,16 +48,16 @@ public class EnviroInspectionMcpTools {
     }
 
     @Tool(description = "触发环保小脑执行一次巡检（操作类，转发环保小脑；不可达时返回友好错误）。")
-    public Object triggerInspection(
+    public OperationResultView triggerInspection(
             @ToolParam(description = "触发巡检的原因/备注；可空") String reason) {
         log.info("[mcp] triggerInspection reason={}", reason);
-        return forwardService.triggerInspection(reason);
+        return OperationResultView.from(forwardService.triggerInspection(reason));
     }
 
     @Tool(description = "下载指定巡检记录的台账 Word 文档（操作类，转发环保小脑；不可达时返回友好错误）。")
-    public Object downloadLedgerDocx(
+    public OperationResultView downloadLedgerDocx(
             @ToolParam(description = "巡检记录 ID（inspectId）") Long inspectId) {
         log.info("[mcp] downloadLedgerDocx inspectId={}", inspectId);
-        return forwardService.downloadLedgerDocx(inspectId);
+        return OperationResultView.from(forwardService.downloadLedgerDocx(inspectId));
     }
 }
