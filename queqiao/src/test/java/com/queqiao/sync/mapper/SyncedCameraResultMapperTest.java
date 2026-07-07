@@ -80,4 +80,15 @@ class SyncedCameraResultMapperTest extends AbstractQueqiaoTest {
         assertThat(latest.get(0).getCameraCode()).isEqualTo("CAM-A");
         assertThat(latest.get(0).getStatus()).isEqualTo("OFFLINE"); // 取 synced_at 最新
     }
+
+    @Test
+    void findByRecordIds_returnsRowsForGivenRecordIds() {
+        SyncedCameraResult a = sample(1L, "ONLINE"); a.setRecordId(100L);
+        SyncedCameraResult b = sample(2L, "OFFLINE"); b.setRecordId(200L);
+        SyncedCameraResult c = sample(3L, "ONLINE"); c.setRecordId(300L);
+        cameraMapper.upsert(a); cameraMapper.upsert(b); cameraMapper.upsert(c);
+
+        List<SyncedCameraResult> rows = cameraMapper.findByRecordIds(List.of(100L, 200L));
+        assertThat(rows).hasSize(2);
+    }
 }

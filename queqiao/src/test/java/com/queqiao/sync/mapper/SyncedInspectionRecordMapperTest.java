@@ -7,6 +7,7 @@ import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,5 +63,19 @@ class SyncedInspectionRecordMapperTest extends AbstractQueqiaoTest {
         SyncedInspectionRecord found = inspectionMapper.findByInspectionDate(LocalDate.of(2026,7,7));
         assertThat(found).isNotNull();
         assertThat(found.getBatchId()).isEqualTo("B1");
+    }
+
+    @Test
+    void findByRange_returnsRecordsWithinBounds() {
+        SyncedInspectionRecord r1 = sample(1L, "DONE"); r1.setInspectionDate(LocalDate.of(2026, 7, 1));
+        SyncedInspectionRecord r2 = sample(2L, "DONE"); r2.setInspectionDate(LocalDate.of(2026, 7, 2));
+        SyncedInspectionRecord r3 = sample(3L, "DONE"); r3.setInspectionDate(LocalDate.of(2026, 7, 10));
+        inspectionMapper.upsert(r1);
+        inspectionMapper.upsert(r2);
+        inspectionMapper.upsert(r3);
+
+        List<SyncedInspectionRecord> rows =
+                inspectionMapper.findByRange(LocalDate.of(2026, 7, 1), LocalDate.of(2026, 7, 2));
+        assertThat(rows).hasSize(2);
     }
 }
