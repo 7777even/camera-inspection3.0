@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queqiao.sync.mapper.SyncedLedgerRecordMapper">
+
+    <!-- 默认（H2 测试环境）：MERGE INTO 兼容 H2 -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedLedgerRecord">
+        MERGE INTO synced_ledger_records t
+        USING (VALUES (#{id}, #{recordId}, #{inspectionDate}, #{content}, #{docxPath}, #{syncVersion}, CURRENT_TIMESTAMP))
+            AS s(id, record_id, inspection_date, content, docx_path, sync_version, synced_at)
+        ON t.id = s.id
+        WHEN MATCHED THEN UPDATE SET
+            record_id = s.record_id,
+            inspection_date = s.inspection_date,
+            content = s.content,
+            docx_path = s.docx_path,
+            sync_version = s.sync_version,
+            synced_at = s.synced_at
+        WHEN NOT MATCHED THEN INSERT (id, record_id, inspection_date, content, docx_path, sync_version, synced_at)
+            VALUES (s.id, s.record_id, s.inspection_date, s.content, s.docx_path, s.sync_version, s.synced_at)
+    </insert>
+
+    <!-- MySQL（生产环境）：ON DUPLICATE KEY UPDATE -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedLedgerRecord" databaseId="mysql">
+        INSERT INTO synced_ledger_records (
+            id, record_id, inspection_date, content, docx_path, sync_version, synced_at
+        ) VALUES (
+            #{id}, #{recordId}, #{inspectionDate}, #{content}, #{docxPath}, #{syncVersion}, CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            record_id = VALUES(record_id),
+            inspection_date = VALUES(inspection_date),
+            content = VALUES(content),
+            docx_path = VALUES(docx_path),
+            sync_version = VALUES(sync_version),
+            synced_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.queqiao.sync.entity.SyncedLedgerRecord">
+        SELECT * FROM synced_ledger_records WHERE id = #{id}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM synced_ledger_records
+    </select>
+</mapper>

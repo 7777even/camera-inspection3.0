@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queqiao.sync.mapper.SyncWatermarkMapper">
+
+    <select id="selectByTableName" parameterType="String" resultType="com.queqiao.sync.entity.SyncWatermark">
+        SELECT * FROM sync_watermark WHERE table_name = #{tableName}
+    </select>
+
+    <!-- 默认（H2 测试环境）：MERGE INTO 兼容 H2，以 table_name 为幂等键 -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncWatermark">
+        MERGE INTO sync_watermark t
+        USING (VALUES (#{tableName}, #{lastSyncVersion}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP))
+            AS s(table_name, last_sync_version, last_sync_time, updated_at)
+        ON t.table_name = s.table_name
+        WHEN MATCHED THEN UPDATE SET
+            last_sync_version = s.last_sync_version,
+            last_sync_time = s.last_sync_time,
+            updated_at = s.updated_at
+        WHEN NOT MATCHED THEN INSERT (table_name, last_sync_version, last_sync_time, updated_at)
+            VALUES (s.table_name, s.last_sync_version, s.last_sync_time, s.updated_at)
+    </insert>
+
+    <!-- MySQL（生产环境）：ON DUPLICATE KEY UPDATE -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncWatermark" databaseId="mysql">
+        INSERT INTO sync_watermark (table_name, last_sync_version, last_sync_time, updated_at)
+        VALUES (#{tableName}, #{lastSyncVersion}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ON DUPLICATE KEY UPDATE
+            last_sync_version = VALUES(last_sync_version),
+            last_sync_time = VALUES(last_sync_time),
+            updated_at = CURRENT_TIMESTAMP
+    </insert>
+</mapper>

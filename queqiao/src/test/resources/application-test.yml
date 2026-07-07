@@ -1,0 +1,32 @@
+# 鹊桥数据同步层 测试环境配置（H2 内存库，模拟 MySQL 行为）
+spring:
+  datasource:
+    url: jdbc:h2:mem:queqiaotest;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema-h2.sql
+  # 测试期间关闭定时调度自动触发，由测试手动调用
+  task:
+    scheduling:
+      enabled: false
+
+# 测试用配置值
+enviro-brain:
+  base-url: http://localhost:9999
+  api-key: test-enviro-key
+
+queqiao:
+  sync:
+    cron: "0 0 0 1 1 ?"
+    batch-limit: 200
+  notify:
+    api-key: test-notify-key
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

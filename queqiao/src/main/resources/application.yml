@@ -1,0 +1,40 @@
+# 鹊桥数据同步层 主配置文件
+spring:
+  profiles:
+    active: dev
+
+server:
+  port: 8081
+
+# 环保小脑连接配置（同步拉取用）
+enviro-brain:
+  base-url: ${ENVIRO_BRAIN_BASE_URL:http://localhost:8080}
+  api-key: ${ENVIRO_BRAIN_API_KEY:dev-api-key-2026}
+
+# 鹊桥同步层配置
+queqiao:
+  sync:
+    # 每 30 分钟触发一轮增量同步（Spring cron：秒 分 时 日 月 周）
+    cron: "0 */30 * * * *"
+    # 每轮单表单次拉取上限
+    batch-limit: 200
+  notify:
+    # 接收环保小脑回调通知时校验的 API Key
+    api-key: ${QUEQIAO_NOTIFY_API_KEY:queqiao-notify-key-2026}
+
+# MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.queqiao.sync.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+# Actuator 配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always

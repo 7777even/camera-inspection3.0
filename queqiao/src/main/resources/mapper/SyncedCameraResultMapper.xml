@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queqiao.sync.mapper.SyncedCameraResultMapper">
+
+    <!-- 默认（H2 测试环境）：MERGE INTO 兼容 H2 -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedCameraResult">
+        MERGE INTO synced_camera_results t
+        USING (VALUES (#{id}, #{recordId}, #{cameraCode}, #{cameraName}, #{status}, #{qualityScore},
+                #{screenshotPath}, #{errorMessage}, #{syncVersion}, CURRENT_TIMESTAMP))
+            AS s(id, record_id, camera_code, camera_name, status, quality_score,
+                screenshot_path, error_message, sync_version, synced_at)
+        ON t.id = s.id
+        WHEN MATCHED THEN UPDATE SET
+            record_id = s.record_id,
+            camera_code = s.camera_code,
+            camera_name = s.camera_name,
+            status = s.status,
+            quality_score = s.quality_score,
+            screenshot_path = s.screenshot_path,
+            error_message = s.error_message,
+            sync_version = s.sync_version,
+            synced_at = s.synced_at
+        WHEN NOT MATCHED THEN INSERT (id, record_id, camera_code, camera_name, status, quality_score,
+            screenshot_path, error_message, sync_version, synced_at)
+            VALUES (s.id, s.record_id, s.camera_code, s.camera_name, s.status, s.quality_score,
+                s.screenshot_path, s.error_message, s.sync_version, s.synced_at)
+    </insert>
+
+    <!-- MySQL（生产环境）：ON DUPLICATE KEY UPDATE -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedCameraResult" databaseId="mysql">
+        INSERT INTO synced_camera_results (
+            id, record_id, camera_code, camera_name, status, quality_score,
+            screenshot_path, error_message, sync_version, synced_at
+        ) VALUES (
+            #{id}, #{recordId}, #{cameraCode}, #{cameraName}, #{status}, #{qualityScore},
+            #{screenshotPath}, #{errorMessage}, #{syncVersion}, CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            record_id = VALUES(record_id),
+            camera_code = VALUES(camera_code),
+            camera_name = VALUES(camera_name),
+            status = VALUES(status),
+            quality_score = VALUES(quality_score),
+            screenshot_path = VALUES(screenshot_path),
+            error_message = VALUES(error_message),
+            sync_version = VALUES(sync_version),
+            synced_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.queqiao.sync.entity.SyncedCameraResult">
+        SELECT * FROM synced_camera_results WHERE id = #{id}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM synced_camera_results
+    </select>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.queqiao.sync.mapper.SyncedInspectionRecordMapper">
+
+    <!-- 默认（H2 测试环境）：MERGE INTO 兼容 H2；无论 databaseId 解析结果如何均被选用 -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedInspectionRecord">
+        MERGE INTO synced_inspection_records t
+        USING (VALUES (#{id}, #{batchId}, #{inspectionDate}, #{totalCameras}, #{onlineCount},
+                #{offlineCount}, #{abnormalCount}, #{status}, #{syncVersion}, CURRENT_TIMESTAMP))
+            AS s(id, batch_id, inspection_date, total_cameras, online_count,
+                offline_count, abnormal_count, status, sync_version, synced_at)
+        ON t.id = s.id
+        WHEN MATCHED THEN UPDATE SET
+            batch_id = s.batch_id,
+            inspection_date = s.inspection_date,
+            total_cameras = s.total_cameras,
+            online_count = s.online_count,
+            offline_count = s.offline_count,
+            abnormal_count = s.abnormal_count,
+            status = s.status,
+            sync_version = s.sync_version,
+            synced_at = s.synced_at
+        WHEN NOT MATCHED THEN INSERT (id, batch_id, inspection_date, total_cameras, online_count,
+            offline_count, abnormal_count, status, sync_version, synced_at)
+            VALUES (s.id, s.batch_id, s.inspection_date, s.total_cameras, s.online_count,
+                s.offline_count, s.abnormal_count, s.status, s.sync_version, s.synced_at)
+    </insert>
+
+    <!-- MySQL（生产环境）：ON DUPLICATE KEY UPDATE -->
+    <insert id="upsert" parameterType="com.queqiao.sync.entity.SyncedInspectionRecord" databaseId="mysql">
+        INSERT INTO synced_inspection_records (
+            id, batch_id, inspection_date, total_cameras, online_count,
+            offline_count, abnormal_count, status, sync_version, synced_at
+        ) VALUES (
+            #{id}, #{batchId}, #{inspectionDate}, #{totalCameras}, #{onlineCount},
+            #{offlineCount}, #{abnormalCount}, #{status}, #{syncVersion}, CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            batch_id = VALUES(batch_id),
+            inspection_date = VALUES(inspection_date),
+            total_cameras = VALUES(total_cameras),
+            online_count = VALUES(online_count),
+            offline_count = VALUES(offline_count),
+            abnormal_count = VALUES(abnormal_count),
+            status = VALUES(status),
+            sync_version = VALUES(sync_version),
+            synced_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.queqiao.sync.entity.SyncedInspectionRecord">
+        SELECT * FROM synced_inspection_records WHERE id = #{id}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM synced_inspection_records
+    </select>
+</mapper>
