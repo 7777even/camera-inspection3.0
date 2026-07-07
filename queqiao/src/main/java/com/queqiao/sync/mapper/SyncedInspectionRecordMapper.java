@@ -2,6 +2,10 @@ package com.queqiao.sync.mapper;
 
 import com.queqiao.sync.entity.SyncedInspectionRecord;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Mapper
 public interface SyncedInspectionRecordMapper {
@@ -12,4 +16,8 @@ public interface SyncedInspectionRecordMapper {
     SyncedInspectionRecord findById(Long id);
 
     int count();
+
+    SyncedInspectionRecord findByInspectionDate(@Param("date") LocalDate date);
+
+    List<SyncedInspectionRecord> findByRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
 }

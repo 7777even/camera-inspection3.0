@@ -43,4 +43,9 @@
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM synced_ledger_records
     </select>
+
+    <select id="findByRecordId" parameterType="long"
+            resultType="com.queqiao.sync.entity.SyncedLedgerRecord">
+        SELECT * FROM synced_ledger_records WHERE record_id = #{recordId}
+    </select>
 </mapper>

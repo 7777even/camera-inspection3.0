@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SyncedLedgerRecordMapperTest extends AbstractQueqiaoTest {
 
     @Autowired
-    private SyncedLedgerRecordMapper mapper;
+    private SyncedLedgerRecordMapper ledgerMapper;
 
     private SyncedLedgerRecord sample(Long id) {
         SyncedLedgerRecord r = new SyncedLedgerRecord();
@@ -29,21 +29,33 @@ class SyncedLedgerRecordMapperTest extends AbstractQueqiaoTest {
 
     @Test
     void upsert_shouldInsertFirstTime() {
-        mapper.upsert(sample(1L));
+        ledgerMapper.upsert(sample(1L));
 
-        SyncedLedgerRecord found = mapper.findById(1L);
+        SyncedLedgerRecord found = ledgerMapper.findById(1L);
         assertThat(found).isNotNull();
         assertThat(found.getContent()).contains("OFFLINE");
-        assertThat(mapper.count()).isEqualTo(1);
+        assertThat(ledgerMapper.count()).isEqualTo(1);
     }
 
     @Test
     void upsert_shouldBeIdempotent() {
-        mapper.upsert(sample(1L));
-        int afterFirst = mapper.count();
+        ledgerMapper.upsert(sample(1L));
+        int afterFirst = ledgerMapper.count();
 
-        mapper.upsert(sample(1L));
+        ledgerMapper.upsert(sample(1L));
 
-        assertThat(mapper.count()).isEqualTo(afterFirst);
+        assertThat(ledgerMapper.count()).isEqualTo(afterFirst);
+    }
+
+    @Test
+    void findByRecordId_returnsLedger() {
+        SyncedLedgerRecord r = new SyncedLedgerRecord();
+        r.setId(20L); r.setRecordId(10L); r.setInspectionDate(LocalDate.of(2026,7,7));
+        r.setContent("台账内容"); r.setSyncVersion(5L);
+        ledgerMapper.upsert(r);
+
+        SyncedLedgerRecord found = ledgerMapper.findByRecordId(10L);
+        assertThat(found).isNotNull();
+        assertThat(found.getContent()).isEqualTo("台账内容");
     }
 }

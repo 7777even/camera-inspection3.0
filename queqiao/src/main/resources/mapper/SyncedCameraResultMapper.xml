@@ -55,4 +55,33 @@
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM synced_camera_results
     </select>
+
+    <select id="findByRecordId" parameterType="long"
+            resultType="com.queqiao.sync.entity.SyncedCameraResult">
+        SELECT * FROM synced_camera_results WHERE record_id = #{recordId}
+    </select>
+
+    <select id="findByCameraCode" parameterType="string"
+            resultType="com.queqiao.sync.entity.SyncedCameraResult">
+        SELECT * FROM synced_camera_results WHERE camera_code = #{cameraCode}
+        ORDER BY synced_at DESC
+    </select>
+
+    <select id="findLatestPerCamera"
+            resultType="com.queqiao.sync.entity.SyncedCameraResult">
+        SELECT scr.* FROM synced_camera_results scr
+        WHERE scr.id = (
+            SELECT s2.id FROM synced_camera_results s2
+            WHERE s2.camera_code = scr.camera_code
+            ORDER BY s2.synced_at DESC, s2.id DESC
+            LIMIT 1
+        )
+    </select>
+
+    <select id="findByRecordIds" parameterType="list"
+            resultType="com.queqiao.sync.entity.SyncedCameraResult">
+        SELECT * FROM synced_camera_results
+        WHERE record_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.queqiao.sync.mapper;
 
 import com.queqiao.sync.entity.SyncedLedgerRecord;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface SyncedLedgerRecordMapper {
@@ -12,4 +13,6 @@ public interface SyncedLedgerRecordMapper {
     SyncedLedgerRecord findById(Long id);
 
     int count();
+
+    SyncedLedgerRecord findByRecordId(@Param("recordId") Long recordId);
 }

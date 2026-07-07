@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SyncedInspectionRecordMapperTest extends AbstractQueqiaoTest {
 
     @Autowired
-    private SyncedInspectionRecordMapper mapper;
+    private SyncedInspectionRecordMapper inspectionMapper;
 
     private SyncedInspectionRecord sample(Long id, String status) {
         SyncedInspectionRecord r = new SyncedInspectionRecord();
@@ -32,22 +32,35 @@ class SyncedInspectionRecordMapperTest extends AbstractQueqiaoTest {
 
     @Test
     void upsert_shouldInsertFirstTime() {
-        mapper.upsert(sample(1L, "RUNNING"));
+        inspectionMapper.upsert(sample(1L, "RUNNING"));
 
-        SyncedInspectionRecord found = mapper.findById(1L);
+        SyncedInspectionRecord found = inspectionMapper.findById(1L);
         assertThat(found).isNotNull();
         assertThat(found.getStatus()).isEqualTo("RUNNING");
-        assertThat(mapper.count()).isEqualTo(1);
+        assertThat(inspectionMapper.count()).isEqualTo(1);
     }
 
     @Test
     void upsert_shouldBeIdempotent() {
-        mapper.upsert(sample(1L, "RUNNING"));
-        int afterFirst = mapper.count();
+        inspectionMapper.upsert(sample(1L, "RUNNING"));
+        int afterFirst = inspectionMapper.count();
 
-        mapper.upsert(sample(1L, "COMPLETED"));
+        inspectionMapper.upsert(sample(1L, "COMPLETED"));
 
-        assertThat(mapper.count()).isEqualTo(afterFirst);
-        assertThat(mapper.findById(1L).getStatus()).isEqualTo("COMPLETED");
+        assertThat(inspectionMapper.count()).isEqualTo(afterFirst);
+        assertThat(inspectionMapper.findById(1L).getStatus()).isEqualTo("COMPLETED");
+    }
+
+    @Test
+    void findByInspectionDate_returnsLatestForDate() {
+        SyncedInspectionRecord r = new SyncedInspectionRecord();
+        r.setId(10L); r.setBatchId("B1"); r.setInspectionDate(LocalDate.of(2026,7,7));
+        r.setTotalCameras(3); r.setOnlineCount(2); r.setOfflineCount(1);
+        r.setAbnormalCount(0); r.setStatus("DONE"); r.setSyncVersion(5L);
+        inspectionMapper.upsert(r);
+
+        SyncedInspectionRecord found = inspectionMapper.findByInspectionDate(LocalDate.of(2026,7,7));
+        assertThat(found).isNotNull();
+        assertThat(found.getBatchId()).isEqualTo("B1");
     }
 }

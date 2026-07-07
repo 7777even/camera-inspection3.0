@@ -2,6 +2,9 @@ package com.queqiao.sync.mapper;
 
 import com.queqiao.sync.entity.SyncedCameraResult;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface SyncedCameraResultMapper {
@@ -12,4 +15,12 @@ public interface SyncedCameraResultMapper {
     SyncedCameraResult findById(Long id);
 
     int count();
+
+    List<SyncedCameraResult> findByRecordId(@Param("recordId") Long recordId);
+
+    List<SyncedCameraResult> findByCameraCode(@Param("cameraCode") String cameraCode);
+
+    List<SyncedCameraResult> findLatestPerCamera();
+
+    List<SyncedCameraResult> findByRecordIds(@Param("ids") List<Long> ids);
 }

@@ -55,4 +55,19 @@
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM synced_inspection_records
     </select>
+
+    <select id="findByInspectionDate" parameterType="java.time.LocalDate"
+            resultType="com.queqiao.sync.entity.SyncedInspectionRecord">
+        SELECT * FROM synced_inspection_records
+        WHERE inspection_date = #{date}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="findByRange" parameterType="map"
+            resultType="com.queqiao.sync.entity.SyncedInspectionRecord">
+        SELECT * FROM synced_inspection_records
+        WHERE inspection_date &gt;= #{start} AND inspection_date &lt;= #{end}
+        ORDER BY inspection_date
+    </select>
 </mapper>
