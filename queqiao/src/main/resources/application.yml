@@ -6,9 +6,16 @@ spring:
     mcp:
       server:
         enabled: true
-        # Streamable HTTP 端点基路径，最终暴露为 /mcp/enviro-inspection
+        # 注意：实际解析依赖为 Spring AI 1.0.0 + MCP Java SDK 0.10.0，其 spring-webmvc 模块仅支持
+        # SSE 传输（WebMvcSseServerTransportProvider），不支持 streamable-http 服务端传输；
+        # transport 合法取值为 WEBMVC / WEBFLUX（非 streamable-http），故此处使用 WEBMVC(SSE)。
+        # 在 0.10.0 中，SSE 端点以 functional RouterFunction 注册，路由路径 = sse-endpoint /
+        # sse-message-endpoint 本身（base-url 不会前缀到路由上，仅用于 SSE 会话上下文）。
+        # 因此最终端点为：GET {sse-endpoint}（SSE 流）、POST {sse-message-endpoint}（JSON-RPC 消息）。
         base-url: /mcp/enviro-inspection
-        transport: streamable-http
+        transport: WEBMVC
+        sse-endpoint: /mcp/sse
+        sse-message-endpoint: /mcp/message
 
 server:
   port: 8081
