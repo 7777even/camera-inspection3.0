@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -55,7 +56,7 @@ public class EnviroBrainForwardClient {
                 throw new SyncClientException("触发巡检失败: " + resp.getStatusCode());
             }
             return resp.getBody().getData();
-        } catch (RestClientException e) {
+        } catch (RestClientException | HttpMessageConversionException e) {
             throw new SyncClientException("触发巡检调用失败", e);
         }
     }
@@ -73,7 +74,7 @@ public class EnviroBrainForwardClient {
                 throw new SyncClientException("下载台账失败: " + resp.getStatusCode());
             }
             return resp.getBody().getData();
-        } catch (RestClientException e) {
+        } catch (RestClientException | HttpMessageConversionException e) {
             throw new SyncClientException("下载台账调用失败", e);
         }
     }

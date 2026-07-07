@@ -43,4 +43,31 @@ class EnviroBrainForwardClientTest {
         assertThatThrownBy(() -> client.downloadLedgerDocx(10L))
                 .isInstanceOf(SyncClientException.class);
     }
+
+    /** 环保小脑返回 200 但响应体不可反序列化（结构损坏）时，应抛 SyncClientException 以便服务层降级（不裸抛 HttpMessageConversionException） */
+    @Test
+    void triggerInspection_throwsWhenBodyUnparseable() {
+        RestTemplate rt = new RestTemplate();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(rt).build();
+        EnviroBrainForwardClient client = new EnviroBrainForwardClient(rt, BASE_URL, API_KEY);
+
+        server.expect(requestTo(BASE_URL + "/api/v1/inspections/trigger"))
+                .andRespond(withSuccess("this-is-not-json", MediaType.APPLICATION_JSON));
+
+        assertThatThrownBy(() -> client.triggerInspection("手动触发"))
+                .isInstanceOf(SyncClientException.class);
+    }
+
+    @Test
+    void downloadLedgerDocx_throwsWhenBodyUnparseable() {
+        RestTemplate rt = new RestTemplate();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(rt).build();
+        EnviroBrainForwardClient client = new EnviroBrainForwardClient(rt, BASE_URL, API_KEY);
+
+        server.expect(requestTo(BASE_URL + "/api/v1/ledger/10/download"))
+                .andRespond(withSuccess("this-is-not-json", MediaType.APPLICATION_JSON));
+
+        assertThatThrownBy(() -> client.downloadLedgerDocx(10L))
+                .isInstanceOf(SyncClientException.class);
+    }
 }
