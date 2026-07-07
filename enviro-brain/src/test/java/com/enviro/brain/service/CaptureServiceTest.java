@@ -98,7 +98,7 @@ class CaptureServiceTest {
             method.setAccessible(true);
 
             String json = "{\"status\":\"online\",\"qualityScore\":0.82,\"screenshotPath\":\"/tmp/cam.jpg\","
-                    + "\"qualityDetail\":\"{\\\"laplacian\\\":0.75}\",\"captureTime\":\"2026-07-06 15:01:23\","
+                    + "\"qualityDetail\":{\"laplacian\":0.75},\"captureTime\":\"2026-07-06 15:01:23\","
                     + "\"retryUsed\":0,\"errorMsg\":null}";
 
             CameraCaptureResult result = (CameraCaptureResult) method.invoke(captureService, json);
