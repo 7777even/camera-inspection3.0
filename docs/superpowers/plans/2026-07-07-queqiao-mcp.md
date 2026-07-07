@@ -2,16 +2,22 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> ⚠️ **实施修正说明（与本计划原假设不符，以实际交付为准）：**
+> - 传输：**SSE**（webmvc/SSE，`WebMvcSseServerTransportProvider`），**非 Streamable HTTP** —— MCP SDK 0.10.0 的 webmvc 模块仅支持 SSE，Spring AI 1.0.0 的 `transport` 合法值为 `WEBMVC`/`WEBFLUX`。
+> - 端点：`GET /mcp/sse`（SSE 流）+ `POST /mcp/message`（JSON-RPC 消息），**非** `/mcp/enviro-inspection`（`base-url` 在 SDK 0.10.0 不前缀到路由）。
+> - 操作类工具返回**具体 `OperationResultView` DTO**（非 `Object`/`Map`）—— Spring AI 1.0.0 会静默丢弃返回 `Object` 的 `@Tool` 方法。
+> - 详见设计文档 `docs/superpowers/specs/2026-07-07-queqiao-mcp-design.md`（已同步修订）与 OpenSpec `openspec/specs/queqiao-mcp-server/spec.md`。
+
 **Goal:** 在现有 queqiao Spring Boot 应用内嵌入一个 MCP Server，把 Phase 3 同步到鹊桥自有库（`synced_*`）的巡查数据封装为 5 个标准 MCP 工具（3 查询 + 2 操作），供脑机桌面端通过自然语言调用。
 
-**Architecture:** 嵌入 queqiao 单进程（端口 8081），用 Spring AI MCP（`spring-ai-mcp-server-webmvc-spring-boot-starter`）暴露 Streamable HTTP 端点 `/mcp/enviro-inspection`。查询类工具委派新增的 `EnviroInspectionQueryService`（直读 `synced_*` Mapper）；操作类工具委派 `EnviroInspectionForwardService` → `EnviroBrainForwardClient`（复用 `RestTemplateConfig` + `enviro-brain.api-key` 转发环保小脑）。复用 Phase 3 全部 DB / Mapper / 配置资产。
+**Architecture:** 嵌入 queqiao 单进程（端口 8081），用 Spring AI MCP（`spring-ai-starter-mcp-server-webmvc`）暴露 **SSE** 端点 `GET /mcp/sse` + `POST /mcp/message`。查询类工具委派新增的 `EnviroInspectionQueryService`（直读 `synced_*` Mapper）；操作类工具委派 `EnviroInspectionForwardService` → `EnviroBrainForwardClient`（复用 `RestTemplateConfig` + `enviro-brain.api-key` 转发环保小脑）。复用 Phase 3 全部 DB / Mapper / 配置资产。
 
 **Tech Stack:** Java 17, Spring Boot 3.3.5, Spring AI MCP 1.0.x（兼容 Boot 3.3.5）, MyBatis 3.0.3, H2（测试，MODE=MYSQL）, Maven（Windows 沙箱走 maven-windows-build：`mvn.cmd`）。
 
 ## Global Constraints
 
-- **嵌入 queqiao 单进程**，不新建部署单元；端点 `/mcp/enviro-inspection`，与 `/api/notify` 共存于 8081。（来自设计 §3）
-- **框架用 Spring AI MCP**，不手写协议；传输采用 Streamable HTTP。（来自设计 §3）
+- **嵌入 queqiao 单进程**，不新建部署单元；端点 `GET /mcp/sse` + `POST /mcp/message`（SSE 传输），与 `/api/notify` 共存于 8081。（来自设计 §3）
+- **框架用 Spring AI MCP**，不手写协议；传输采用 **SSE**（WebMvcSseServerTransportProvider，因 MCP SDK 0.10.0 的 webmvc 不支持 Streamable HTTP）。（来自设计 §3）
 - **查询类工具直读 `synced_*` 库，绝不穿透环保小脑**；无数据返回空结构 + 提示，不抛 5xx。（来自设计 §4.1/§7）
 - **操作类工具转发环保小脑，仅当其可达时**；不可达返回友好错误「环保小脑暂不可用，请稍后重试」，MCP 调用不崩溃。（来自设计 §4.2/§7）
 - **TDD + 频繁提交**；每个任务以独立可测交付物收尾；最终 `mvn test` 全绿（含 Phase 3 的 21 个测试）。
@@ -150,9 +156,10 @@ spring:
     mcp:
       server:
         enabled: true
-        # Streamable HTTP 端点基路径，最终暴露为 /mcp/enviro-inspection
+        # SSE 传输（WebMvcSseServerTransportProvider）；端点 GET /mcp/sse + POST /mcp/message
+        # 注意：MCP SDK 0.10.0 的 base-url 不前缀到路由路径，仅用于 SSE 会话上下文
         base-url: /mcp/enviro-inspection
-        transport: streamable-http
+        transport: WEBMVC
 
 queqiao:
   mcp:
@@ -1083,17 +1090,17 @@ public class EnviroInspectionMcpTools {
     }
 
     @Tool(description = "触发环保小脑执行一次巡检（操作类，转发环保小脑；不可达时返回友好错误）。")
-    public Object triggerInspection(
-            @ToolParam(description = "触发原因，可选") String reason) {
+    public OperationResultView triggerInspection(
+            @ToolParam(description = "触发巡检的原因/备注；可空") String reason) {
         log.info("[mcp] triggerInspection reason={}", reason);
-        return forwardService.triggerInspection(reason);
+        return OperationResultView.from(forwardService.triggerInspection(reason));
     }
 
     @Tool(description = "下载指定巡检记录的台账 Word 文档（操作类，转发环保小脑；不可达时返回友好错误）。")
-    public Object downloadLedgerDocx(
-            @ToolParam(description = "巡检记录 ID，必填") Long inspectId) {
+    public OperationResultView downloadLedgerDocx(
+            @ToolParam(description = "巡检记录 ID（inspectId）") Long inspectId) {
         log.info("[mcp] downloadLedgerDocx inspectId={}", inspectId);
-        return forwardService.downloadLedgerDocx(inspectId);
+        return OperationResultView.from(forwardService.downloadLedgerDocx(inspectId));
     }
 }
 ```
@@ -1199,7 +1206,7 @@ class EnviroInspectionMcpIntegrationTest {
 }
 ```
 
-> 协议级 HTTP 传输验证（可选但推荐）：用 `McpClient.sync(transport)` 在 `@SpringBootTest(webEnvironment = RANDOM_PORT)` 下对 `/mcp/enviro-inspection` 发起 `initialize → tools/list → tools/call`。传输类按解析到的 Spring AI MCP 版本选择 `HttpClientStreamableHttpTransport`（streamable-http）或回退 `WebMvcSseClientTransport`（SSE）；端点路径与 `spring.ai.mcp.server.base-url` 对齐。**核对版本**：若 `ToolCallbackProvider` / `getToolCallbacks()` / `getToolDefinition().name()` 等 API 与解析版本不符，以实际版本签名调整（逻辑与工具契约不变）。
+> 协议级端点验证（已实现）：因 MCP SDK 0.10.0 的 webmvc 仅提供 SSE server transport、且无 streamable-http client transport，`HttpClientStreamableHttpTransport` 不可用。实际方案用 `RouterFunctionMapping.getHandler(mockRequest)` 断言 SSE 端点 `GET /mcp/sse` 与 `POST /mcp/message` 已映射（见 `EnviroInspectionMcpHttpIntegrationTest`）；工具注册/调用由 `EnviroInspectionMcpIntegrationTest` 经 `ToolCallbackProvider` 验证。真机线缆级 `initialize → listTools → callTool` 联调见 `docs/Phase4本地手动冒烟步骤.md`（Python SSE 客户端示例）。
 
 - [ ] **Step 2: 运行集成测试确认通过**
 
@@ -1319,14 +1326,14 @@ git commit -m "feat(phase4): 可选 MCP 端点鉴权拦截器（默认关闭）"
    - ENVIRO_BRAIN_API_KEY=dev-api-key-2026
 2. 启动 queqiao：
    mvn spring-boot:run   （或 java -jar target/queqiao-1.0.0-SNAPSHOT.jar）
-3. 确认 MCP 端点已挂载：应用日志应出现 MCP Server 初始化，端点 /mcp/enviro-inspection
+3. 确认 MCP 端点已挂载：应用日志应出现 MCP Server 初始化与 "Registered tools: 5"，SSE 端点 GET /mcp/sse + POST /mcp/message 已映射
 
 ## 用 MCP 客户端验证（如 Claude Desktop / 脑机端）
 mcpServers 配置：
 {
   "mcpServers": {
     "enviro-inspection": {
-      "url": "http://localhost:8081/mcp/enviro-inspection",
+      "url": "http://localhost:8081/mcp/sse",
       "headers": { "Authorization": "Bearer <网关令牌>" }
     }
   }
