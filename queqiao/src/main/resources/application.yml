@@ -39,6 +39,7 @@ queqiao:
     # MCP 端点自身鉴权：默认关闭（外部网关已做 Bearer 校验）
     auth:
       enabled: false
+      api-key: ${QUEQIAO_MCP_API_KEY:}
 
 # MyBatis 配置
 mybatis:

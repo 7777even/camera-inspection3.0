@@ -13,10 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final ApiKeyAuthInterceptor apiKeyAuthInterceptor;
+    private final McpAuthInterceptor mcpAuthInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(apiKeyAuthInterceptor)
                 .addPathPatterns("/api/notify/**");
+        registry.addInterceptor(mcpAuthInterceptor)
+                .addPathPatterns("/mcp/**");
     }
 }
