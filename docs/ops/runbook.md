@@ -23,7 +23,7 @@ docker compose ps
 # 预期输出示例：
 # NAME                       IMAGE                     STATUS        PORTS
 # inspection-enviro-brain    enviro-brain:latest       Up 2 days     0.0.0.0:8080->8080/tcp
-# inspection-mysql           mysql:8.0                 Up 2 days     0.0.0.0:3306->3306/tcp
+# inspection-mysql           mysql:5.7                 Up 2 days     0.0.0.0:3306->3307/tcp
 # inspection-queqiao         queqiao:latest            Up 2 days     0.0.0.0:8081->8081/tcp
 ```
 

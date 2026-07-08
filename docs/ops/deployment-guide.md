@@ -24,7 +24,7 @@
 
 **依赖服务：**
 
-- **MySQL 8.0** — 可由 Docker Compose 自动部署，也可使用外部实例
+- **MySQL 5.7+** — 可由 Docker Compose 自动部署，也可使用外部实例
 - **海康威视 Artemis API** — 摄像头截图所需（网络可达 172.168.97.251 及端口 443）
 - **飞书 Webhook**（可选）— 巡检报告通知
 - **Python 3** — 仅在 enviro-brain 容器内用于摄像头截图脚本（镜像已内置）
@@ -235,7 +235,7 @@ curl http://localhost:8080/actuator/info
 |------|------|--------|------|
 | 8080 | enviro-brain | `inspection-enviro-brain` | 巡检核心 REST API + 同步拉取接口 |
 | 8081 | queqiao | `inspection-queqiao` | MCP SSE 服务端 + 数据同步层 |
-| 3306 | MySQL 8.0 | `inspection-mysql` | 数据库（仅内部访问） |
+| 3306 | MySQL 5.7+ | `inspection-mysql` | 数据库（仅内部访问） |
 
 **端点路径参考：**
 
@@ -254,7 +254,7 @@ curl http://localhost:8080/actuator/info
 
 ## 使用外部 MySQL
 
-若已有 MySQL 8.0 实例，可按以下步骤操作：
+若已有 MySQL 5.7+ 实例，可按以下步骤操作：
 
 ### 1. 从 docker-compose.yml 中移除 mysql 服务
 
