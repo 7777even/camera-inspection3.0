@@ -17,6 +17,8 @@ public class CameraConfig {
     private String rtspUrl;
     private String location;
     private Integer enabled;
+    /** 是否更新到台账（1=是，0=否，来自 Excel 清单） */
+    private Integer ledgerEnabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

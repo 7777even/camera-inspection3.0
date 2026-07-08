@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,5 +122,21 @@ public class CaptureService {
                 searchFrom = brace + 1;
             }
         }
+    }
+
+    /**
+     * 当 Future.get() 超时时调用：检查磁盘上是否存在该摄像头的截图文件。
+     * 脚本可能将截图保存到磁盘但执行超 60s，导致 Java 侧超时。
+     */
+    public String findScreenshot(String cameraName) {
+        if (cameraName == null || cameraName.isEmpty()) return null;
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        File dir = new File(screenshotsDir + "/" + today);
+        if (!dir.exists()) return null;
+        File[] files = dir.listFiles((d, name) -> name.contains(cameraName) && name.endsWith(".jpg"));
+        if (files != null && files.length > 0) {
+            return files[0].getAbsolutePath();
+        }
+        return null;
     }
 }

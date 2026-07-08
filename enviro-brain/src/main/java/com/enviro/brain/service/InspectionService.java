@@ -35,6 +35,9 @@ public class InspectionService {
     @Value("${enviro.inspection.concurrency:12}")
     private int concurrency;
 
+    @Value("${enviro.inspection.capture-timeout-seconds:120}")
+    private int captureTimeoutSeconds;
+
     /**
      * 执行一次完整巡检。
      * @param triggerType "auto" | "manual"
@@ -94,14 +97,25 @@ public class InspectionService {
             for (int i = 0; i < futures.size(); i++) {
                 CameraConfig cam = cameras.get(i);
                 try {
-                    CameraCaptureResult captureResult = futures.get(i).get(60, TimeUnit.SECONDS);
+                    CameraCaptureResult captureResult = futures.get(i).get(captureTimeoutSeconds, TimeUnit.SECONDS);
                     CameraResult entity = buildCameraResult(cam, captureResult, inspectId, syncVersion);
                     results.add(entity);
                 } catch (TimeoutException e) {
                     log.warn("[Inspection] {} 截图超时", cam.getCameraCode());
-                    CameraResult offline = buildErrorResult(cam, inspectId, "截图超时(60s)", syncVersion);
-                    offline.setStatus("offline");
-                    results.add(offline);
+                    // 脚本可能已保存截图但运行超 60s，检查磁盘
+                    String fallbackPath = captureService.findScreenshot(cam.getCameraName());
+                    if (fallbackPath != null) {
+                        log.info("[Inspection] {} 截图文件已存在: {}，按在线处理", cam.getCameraCode(), fallbackPath);
+                        // 用基本状态构造一个近似 online 的结果
+                        CameraResult online = buildErrorResult(cam, inspectId, null, syncVersion);
+                        online.setStatus("online");
+                        online.setScreenshotPath(fallbackPath);
+                        results.add(online);
+                    } else {
+                        CameraResult offline = buildErrorResult(cam, inspectId, "截图超时(" + captureTimeoutSeconds + "s)", syncVersion);
+                        offline.setStatus("offline");
+                        results.add(offline);
+                    }
                 } catch (Exception e) {
                     log.warn("[Inspection] {} 截图异常: {}", cam.getCameraCode(), e.getMessage());
                     CameraResult error = buildErrorResult(cam, inspectId, e.getMessage(), syncVersion);
@@ -127,9 +141,13 @@ public class InspectionService {
         record.setStatus("COMPLETED");
         inspectionRecordMapper.updateById(record);
 
-        // ⑦ 生成台账
+        // ⑦ 生成台账（仅 Excel 中标记"更新到台账"的摄像头）
+        Set<String> ledgerCodes = cameras.stream()
+                .filter(c -> c.getLedgerEnabled() != null && c.getLedgerEnabled() == 1)
+                .map(CameraConfig::getCameraCode)
+                .collect(Collectors.toSet());
         List<CameraResult> ledgerTargets = results.stream()
-                .filter(r -> ledgerService.shouldRegisterToLedger(r))
+                .filter(r -> ledgerCodes.contains(r.getCameraCode()))
                 .collect(Collectors.toList());
         String docxPath = null;
         try {
