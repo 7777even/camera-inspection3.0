@@ -559,6 +559,7 @@ def main():
     parser.add_argument("--save-dir", default="./screenshots", help="截图保存目录")
     parser.add_argument("--timeout", type=int, default=15, help="RTSP超时秒数")
     parser.add_argument("--retry", type=int, default=3, help="重试次数")
+    parser.add_argument("--warmup", type=float, default=5.0, help="RTSP预热秒数")
     parser.add_argument("--api-path", default="/artemis", help="API前缀")
     parser.add_argument("--json", action="store_true", help="输出JSON格式结果")
 
@@ -574,6 +575,7 @@ def main():
         save_dir=args.save_dir,
         timeout=args.timeout,
         retry_count=args.retry,
+        warmup_seconds=args.warmup,
         api_path=args.api_path,
     )
 
