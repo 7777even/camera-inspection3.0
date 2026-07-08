@@ -70,7 +70,10 @@ echo ""
 echo "--- 4. 触发数据同步 ---"
 LATEST_SYNC=$(mysql -uroot -proot -h127.0.0.1 -P3306 -e \
   "SELECT MAX(sync_version) FROM enviro_brain.inspection_records" 2>/dev/null | tail -1)
-curl -sf "http://localhost:8081/api/notify?syncVersion=$LATEST_SYNC" > /dev/null 2>&1 || true
+curl -sf -X POST "http://localhost:8081/api/notify/new-data" \
+  -H "X-API-Key: queqiao-notify-key-2026" \
+  -H "Content-Type: application/json" \
+  -d "{\"syncVersion\": $LATEST_SYNC, \"type\": \"inspection_completed\"}" > /dev/null 2>&1 || true
 sleep 5
 
 # 5. MCP 查询验证
@@ -85,8 +88,8 @@ async def t():
         async with ClientSession(r,w) as s:
             await s.initialize()
             res = await s.call_tool('get_inspection_summary', {
-                'start_date': '$(date +%Y-%m-%d)',
-                'end_date': '$(date +%Y-%m-%d)'
+                'start': '$(date +%Y-%m-%d)',
+                'end': '$(date +%Y-%m-%d)'
             })
             print(res.content[0].text[:100])
 asyncio.run(t())
