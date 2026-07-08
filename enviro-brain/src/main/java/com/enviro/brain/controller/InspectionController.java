@@ -1,6 +1,7 @@
 package com.enviro.brain.controller;
 
 import com.enviro.brain.dto.ApiResponse;
+import com.enviro.brain.dto.InspectionContext;
 import com.enviro.brain.service.InspectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,10 @@ public class InspectionController {
     @PostMapping("/trigger")
     public ResponseEntity<ApiResponse<Map<String, Object>>> trigger() {
         log.info("[Controller] 手动触发巡检");
-        Long taskId = inspectionService.executeInspection("manual");
+        InspectionContext ctx = inspectionService.prepareInspection("manual");
+        inspectionService.runInspectionAsync(ctx);
         return ResponseEntity.accepted().body(
-                ApiResponse.success(Map.of("taskId", taskId, "status", "running"))
+                ApiResponse.success(Map.of("taskId", ctx.getInspectId(), "status", "running"))
         );
     }
 }
