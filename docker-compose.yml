@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: inspection-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  enviro-brain:
+    build:
+      context: ./enviro-brain
+      dockerfile: Dockerfile
+    container_name: inspection-enviro-brain
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_HOST: mysql
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - screenshots-data:/data/screenshots
+      - ledger-data:/data/ledger
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  queqiao:
+    build:
+      context: ./queqiao
+      dockerfile: Dockerfile
+    container_name: inspection-queqiao
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_HOST: mysql
+      ENVIRO_BRAIN_HOST: enviro-brain
+    depends_on:
+      mysql:
+        condition: service_healthy
+      enviro-brain:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql-data:
+  screenshots-data:
+  ledger-data:
