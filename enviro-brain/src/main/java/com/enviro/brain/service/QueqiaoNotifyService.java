@@ -13,6 +13,9 @@ public class QueqiaoNotifyService {
     @Value("${enviro.queqiao.callback-url:}")
     private String callbackUrl;
 
+    @Value("${enviro.queqiao.notify-api-key:queqiao-notify-key-2026}")
+    private String notifyApiKey;
+
     private RestTemplate restTemplate = new RestTemplate();
 
     public void notifyNewData(long syncVersion) {
@@ -22,6 +25,7 @@ public class QueqiaoNotifyService {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-API-Key", notifyApiKey);
             String body = "{\"syncVersion\":" + syncVersion + ",\"type\":\"inspection_completed\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
             restTemplate.postForObject(callbackUrl, entity, String.class);

@@ -31,7 +31,8 @@ enviro:
   feishu:
     webhook-url: ${FEISHU_WEBHOOK_URL:}
   queqiao:
-    callback-url: ${QUEQIAO_CALLBACK_URL:}
+    callback-url: ${QUEQIAO_CALLBACK_URL:http://localhost:8081/api/notify/new-data}
+    notify-api-key: ${QUEQIAO_NOTIFY_API_KEY:queqiao-notify-key-2026}
   inspection:
     concurrency: 12
     capture-timeout-seconds: 120

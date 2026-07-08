@@ -2,6 +2,7 @@ package com.enviro.brain.service;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.*;
@@ -21,6 +22,7 @@ class QueqiaoNotifyServiceTest {
     void setUp() {
         service = new QueqiaoNotifyService();
         ReflectionTestUtils.setField(service, "callbackUrl", "http://queqiao/api/notify/new-data");
+        ReflectionTestUtils.setField(service, "notifyApiKey", "queqiao-notify-key-2026");
         ReflectionTestUtils.setField(service, "restTemplate", restTemplate);
     }
 
@@ -38,6 +40,21 @@ class QueqiaoNotifyServiceTest {
     }
 
     @Test
+    @DisplayName("should send X-API-Key header")
+    void shouldSendApiKeyHeader() {
+        when(restTemplate.postForObject(anyString(), any(HttpEntity.class), eq(String.class)))
+                .thenReturn("ok");
+        service.notifyNewData(42L);
+
+        @SuppressWarnings("unchecked")
+        ArgumentCaptor<HttpEntity<String>> captor = ArgumentCaptor.forClass(HttpEntity.class);
+        verify(restTemplate).postForObject(anyString(), captor.capture(), eq(String.class));
+
+        HttpHeaders headers = captor.getValue().getHeaders();
+        Assertions.assertEquals("queqiao-notify-key-2026", headers.getFirst("X-API-Key"));
+    }
+
+    @Test
     @DisplayName("should skip when URL is empty")
     void shouldSkipWhenEmpty() {
         ReflectionTestUtils.setField(service, "callbackUrl", "");
@@ -50,6 +67,6 @@ class QueqiaoNotifyServiceTest {
     void shouldNotThrowOnFailure() {
         when(restTemplate.postForObject(anyString(), any(HttpEntity.class), eq(String.class)))
                 .thenThrow(new RuntimeException("Connection refused"));
-        service.notifyNewData(42L); // should not throw
+        service.notifyNewData(42L);
     }
 }
