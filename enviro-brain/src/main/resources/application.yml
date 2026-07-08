@@ -33,7 +33,7 @@ enviro:
   queqiao:
     callback-url: ${QUEQIAO_CALLBACK_URL:}
   inspection:
-    concurrency: 4
+    concurrency: 12
     capture-timeout-seconds: 60
 
 # MyBatis 配置

@@ -8,6 +8,7 @@ import com.enviro.brain.mapper.CameraResultMapper;
 import com.enviro.brain.mapper.InspectionRecordMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -30,6 +31,9 @@ public class InspectionService {
     private final LedgerService ledgerService;
     private final FeishuNotifyService feishuNotifyService;
     private final QueqiaoNotifyService queqiaoNotifyService;
+
+    @Value("${enviro.inspection.concurrency:12}")
+    private int concurrency;
 
     /**
      * 执行一次完整巡检。
@@ -67,7 +71,7 @@ public class InspectionService {
         List<CameraResult> results = new ArrayList<>();
         if (!cameras.isEmpty()) {
             ThreadPoolExecutor pool = new ThreadPoolExecutor(
-                    4, 4, 60, TimeUnit.SECONDS,
+                    concurrency, concurrency, 60, TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>(),
                     new ThreadPoolExecutor.CallerRunsPolicy()
             );
