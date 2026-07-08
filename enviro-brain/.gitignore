@@ -19,7 +19,6 @@ Thumbs.db
 
 # Environment config (contains sensitive data)
 application-dev.yml
-application-prod.yml
 application-test.yml
 
 # Logs
