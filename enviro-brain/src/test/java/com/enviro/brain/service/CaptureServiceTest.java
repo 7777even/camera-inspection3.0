@@ -67,8 +67,7 @@ class CaptureServiceTest {
             assertThat(cmdList).contains("--camera-name", "危废仓库1");
             assertThat(cmdList).contains("--save-dir", "./screenshots");
             assertThat(cmdList).contains("--timeout", "15");
-            assertThat(cmdList).contains("--retry-count", "3");
-            assertThat(cmdList).contains("--warmup", "5.0");
+            assertThat(cmdList).contains("--retry", "3");
             assertThat(cmdList).contains("--json");
         }
 
