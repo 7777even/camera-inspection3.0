@@ -1,6 +1,7 @@
 package com.enviro.brain.service;
 
 import com.enviro.brain.dto.CameraCaptureResult;
+import com.enviro.brain.dto.InspectionContext;
 import com.enviro.brain.entity.CameraConfig;
 import com.enviro.brain.entity.CameraResult;
 import com.enviro.brain.entity.InspectionRecord;
@@ -12,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +36,16 @@ class InspectionServiceTest {
 
     @InjectMocks
     private InspectionService inspectionService;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        Field concurrencyField = InspectionService.class.getDeclaredField("concurrency");
+        concurrencyField.setAccessible(true);
+        concurrencyField.set(inspectionService, 2);
+        Field timeoutField = InspectionService.class.getDeclaredField("captureTimeoutSeconds");
+        timeoutField.setAccessible(true);
+        timeoutField.set(inspectionService, 30);
+    }
 
     private List<CameraConfig> cameras() {
         CameraConfig c1 = new CameraConfig();
@@ -184,4 +196,31 @@ class InspectionServiceTest {
             assertThat(updated.getStatus()).isEqualTo("COMPLETED");
         }
     }
+
+        @Nested
+        @DisplayName("prepareInspection()")
+        class PrepareInspection {
+
+            @Test
+            @DisplayName("should create RUNNING record and return context")
+            void shouldCreateRunningRecord() {
+                when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+                when(syncVersionService.nextVersion()).thenReturn(42L);
+                doAnswer(invocation -> {
+                    InspectionRecord rec = invocation.getArgument(0);
+                    rec.setId(1L);
+                    return null;
+                }).when(inspectionRecordMapper).insert(any(InspectionRecord.class));
+
+                InspectionContext ctx = inspectionService.prepareInspection("manual");
+
+                assertThat(ctx).isNotNull();
+                assertThat(ctx.getInspectId()).isEqualTo(1L);
+                assertThat(ctx.getSyncVersion()).isEqualTo(42L);
+                assertThat(ctx.getCameras()).hasSize(2);
+                assertThat(ctx.getRecord().getStatus()).isEqualTo("RUNNING");
+                verify(inspectionRecordMapper).insert(any(InspectionRecord.class));
+                verify(inspectionRecordMapper, never()).updateById(any());
+            }
+        }
 }

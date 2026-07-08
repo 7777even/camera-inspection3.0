@@ -1,6 +1,7 @@
 package com.enviro.brain.service;
 
 import com.enviro.brain.dto.CameraCaptureResult;
+import com.enviro.brain.dto.InspectionContext;
 import com.enviro.brain.entity.CameraConfig;
 import com.enviro.brain.entity.CameraResult;
 import com.enviro.brain.entity.InspectionRecord;
@@ -9,6 +10,7 @@ import com.enviro.brain.mapper.InspectionRecordMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -39,23 +41,19 @@ public class InspectionService {
     private int captureTimeoutSeconds;
 
     /**
-     * 执行一次完整巡检。
-     * @param triggerType "auto" | "manual"
-     * @return inspectId
+     * Phase 1: 创建巡检记录（RUNNING），返回上下文。
+     * 同步 + @Transactional，由控制器或调度器调用。
      */
     @Transactional
-    public Long executeInspection(String triggerType) {
+    public InspectionContext prepareInspection(String triggerType) {
         LocalDateTime startTime = LocalDateTime.now();
-        log.info("[Inspection] 开始执行巡检，触发类型：{}", triggerType);
+        log.info("[Inspection] 准备巡检，触发类型：{}", triggerType);
 
-        // ① 读取启用的摄像头清单
         List<CameraConfig> cameras = cameraConfigService.findActive(1, 10000);
         log.info("[Inspection] 共读取 {} 路摄像头", cameras.size());
 
-        // ② 获取全局同步版本号
         long syncVersion = syncVersionService.nextVersion();
 
-        // ③ 创建巡检记录（running）
         InspectionRecord record = new InspectionRecord();
         record.setBatchId(triggerType + "-" + startTime.toLocalDate() + "-"
                 + startTime.toLocalTime().toString().replace(":", "").substring(0, 4));
@@ -68,7 +66,26 @@ public class InspectionService {
         record.setSyncVersion(syncVersion);
         record.setCreatedAt(startTime);
         inspectionRecordMapper.insert(record);
-        Long inspectId = record.getId();
+
+        InspectionContext ctx = new InspectionContext();
+        ctx.setInspectId(record.getId());
+        ctx.setSyncVersion(syncVersion);
+        ctx.setCameras(cameras);
+        ctx.setRecord(record);
+        return ctx;
+    }
+
+    /**
+     * Phase 2: 执行巡检主体（截图 + 写库 + 台账 + 通知 + 回调）。
+     * 无事务注解 — async 路径各 DB 操作自动提交；sync 路径由外层 @Transactional 覆盖。
+     */
+    void runInspectionBody(InspectionContext ctx) {
+        Long inspectId = ctx.getInspectId();
+        long syncVersion = ctx.getSyncVersion();
+        List<CameraConfig> cameras = ctx.getCameras();
+        InspectionRecord record = ctx.getRecord();
+
+        log.info("[Inspection] 开始执行巡检主体, inspectId={}", inspectId);
 
         // ④ 并发截图
         List<CameraResult> results = new ArrayList<>();
@@ -102,11 +119,9 @@ public class InspectionService {
                     results.add(entity);
                 } catch (TimeoutException e) {
                     log.warn("[Inspection] {} 截图超时", cam.getCameraCode());
-                    // 脚本可能已保存截图但运行超 60s，检查磁盘
                     String fallbackPath = captureService.findScreenshot(cam.getCameraName());
                     if (fallbackPath != null) {
                         log.info("[Inspection] {} 截图文件已存在: {}，按在线处理", cam.getCameraCode(), fallbackPath);
-                        // 用基本状态构造一个近似 online 的结果
                         CameraResult online = buildErrorResult(cam, inspectId, null, syncVersion);
                         online.setStatus("online");
                         online.setScreenshotPath(fallbackPath);
@@ -141,7 +156,7 @@ public class InspectionService {
         record.setStatus("COMPLETED");
         inspectionRecordMapper.updateById(record);
 
-        // ⑦ 生成台账（仅 Excel 中标记"更新到台账"的摄像头）
+        // ⑦ 生成台账
         Set<String> ledgerCodes = cameras.stream()
                 .filter(c -> c.getLedgerEnabled() != null && c.getLedgerEnabled() == 1)
                 .map(CameraConfig::getCameraCode)
@@ -149,9 +164,8 @@ public class InspectionService {
         List<CameraResult> ledgerTargets = results.stream()
                 .filter(r -> ledgerCodes.contains(r.getCameraCode()))
                 .collect(Collectors.toList());
-        String docxPath = null;
         try {
-            docxPath = ledgerService.generateAndSave(inspectId, ledgerTargets, syncVersion);
+            ledgerService.generateAndSave(inspectId, ledgerTargets, syncVersion);
         } catch (Exception e) {
             log.error("[Inspection] 台账生成失败: {}", e.getMessage());
         }
@@ -163,7 +177,7 @@ public class InspectionService {
             log.error("[Inspection] 飞书通知异常: {}", e.getMessage());
         }
 
-        // ⑨ 鹊桥回调（可选）
+        // ⑨ 鹊桥回调
         try {
             queqiaoNotifyService.notifyNewData(syncVersion);
         } catch (Exception e) {
@@ -171,7 +185,26 @@ public class InspectionService {
         }
 
         log.info("[Inspection] 巡检完成: 在线{} 离线{} 异常{}", online, offline, abnormal);
-        return inspectId;
+    }
+
+    /**
+     * 异步执行巡检主体（控制器用）。
+     * @Async 使该方法在独立线程中执行，调用方立即返回。
+     */
+    @Async
+    public void runInspectionAsync(InspectionContext ctx) {
+        runInspectionBody(ctx);
+    }
+
+    /**
+     * 同步执行完整巡检（调度器用，行为不变）。
+     * @Transactional 覆盖 prepare + body，整体一个事务。
+     */
+    @Transactional
+    public Long executeInspection(String triggerType) {
+        InspectionContext ctx = prepareInspection(triggerType);
+        runInspectionBody(ctx);
+        return ctx.getInspectId();
     }
 
     private CameraResult buildCameraResult(CameraConfig config, CameraCaptureResult capture, Long inspectId, long syncVersion) {
