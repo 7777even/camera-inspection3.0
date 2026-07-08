@@ -101,11 +101,23 @@ public class CaptureService {
         return cmd.toArray(new String[0]);
     }
 
-    CameraCaptureResult parseResult(String json) {
-        try {
-            return mapper.readValue(json, CameraCaptureResult.class);
-        } catch (Exception e) {
-            throw new RuntimeException("JSON 解析失败: " + e.getMessage(), e);
+    CameraCaptureResult parseResult(String raw) {
+        // 脚本在 stdout 输出 JSON，但 redirectErrorStream(true) 会把 stderr 的 HEVC/ffmpeg
+        // 日志（如 [hevc @ ...]）也混入 stdout。以下从每个可能的 { 位置尝试解析，
+        // 取第一个成功的结果。
+        int searchFrom = 0;
+        while (true) {
+            int brace = raw.indexOf('{', searchFrom);
+            if (brace < 0) {
+                throw new RuntimeException("输出中未找到 JSON 对象: "
+                        + raw.substring(0, Math.min(raw.length(), 100)));
+            }
+            String candidate = raw.substring(brace);
+            try {
+                return mapper.readValue(candidate, CameraCaptureResult.class);
+            } catch (Exception ignored) {
+                searchFrom = brace + 1;
+            }
         }
     }
 }

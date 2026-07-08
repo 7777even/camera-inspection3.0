@@ -99,8 +99,9 @@ public class InspectionService {
                     results.add(entity);
                 } catch (TimeoutException e) {
                     log.warn("[Inspection] {} 截图超时", cam.getCameraCode());
-                    CameraResult timeout = buildErrorResult(cam, inspectId, "截图超时(60s)", syncVersion);
-                    results.add(timeout);
+                    CameraResult offline = buildErrorResult(cam, inspectId, "截图超时(60s)", syncVersion);
+                    offline.setStatus("offline");
+                    results.add(offline);
                 } catch (Exception e) {
                     log.warn("[Inspection] {} 截图异常: {}", cam.getCameraCode(), e.getMessage());
                     CameraResult error = buildErrorResult(cam, inspectId, e.getMessage(), syncVersion);
