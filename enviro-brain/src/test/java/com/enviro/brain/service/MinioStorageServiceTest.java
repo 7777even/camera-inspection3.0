@@ -2,6 +2,8 @@ package com.enviro.brain.service;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectsArgs;
+import io.minio.messages.DeleteObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,12 +11,17 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -86,5 +93,40 @@ class MinioStorageServiceTest {
         verify(minioClient).putObject(cap.capture());
         String objName = cap.getValue().object();
         assertThat(objName).matches(".*/三菱化学危废仓库1_\\d{2}\\.jpg$");
+    }
+
+    // MinIO 8.5.7 的 DeleteObject 没有公开 getter，对象名存在私有字段 name 上。
+    // 这里通过反射读取，用于断言 removeObjects 只收到过期 key。
+    private static String deleteObjectName(DeleteObject d) {
+        try {
+            Field f = DeleteObject.class.getDeclaredField("name");
+            f.setAccessible(true);
+            return (String) f.get(d);
+        } catch (Exception e) {
+            throw new AssertionError("无法读取 DeleteObject.name", e);
+        }
+    }
+
+    @Test
+    void cleanupExpiredObjects_skipsWhenDisabled() throws Exception {
+        MinioStorageService disabled = new MinioStorageService(minioClient, "http://x", "b", "", 7, false);
+        int n = disabled.cleanupExpiredObjects();
+        assertThat(n).isEqualTo(0);
+        verify(minioClient, never()).removeObjects(any());
+    }
+
+    @Test
+    void cleanupExpiredObjects_deletesOnlyExpired() throws Exception {
+        MinioStorageService spy = spy(service);
+        doReturn(List.of("2026-07-01/a_12.jpg", "2026-07-09/b_12.jpg")).when(spy).listObjectKeys();
+        int n = spy.cleanupExpiredObjects();
+        assertThat(n).isEqualTo(1);
+        ArgumentCaptor<RemoveObjectsArgs> cap = ArgumentCaptor.forClass(RemoveObjectsArgs.class);
+        verify(minioClient).removeObjects(cap.capture());
+        // RemoveObjectsArgs.objects() 在 8.5.7 返回 Iterable<DeleteObject>，需收集为 List
+        List<DeleteObject> objs = new ArrayList<>();
+        cap.getValue().objects().forEach(objs::add);
+        assertThat(objs).hasSize(1);
+        assertThat(deleteObjectName(objs.get(0))).isEqualTo("2026-07-01/a_12.jpg");
     }
 }

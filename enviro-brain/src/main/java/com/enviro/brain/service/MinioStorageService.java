@@ -1,9 +1,14 @@
 package com.enviro.brain.service;
 
 import io.minio.BucketExistsArgs;
+import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectsArgs;
+import io.minio.Result;
+import io.minio.messages.DeleteObject;
+import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -139,6 +144,53 @@ public class MinioStorageService {
             }
         } catch (Exception e) {
             log.warn("[Minio] 检查/创建 bucket 失败（可能已存在或无权限）: {}", e.getMessage());
+        }
+    }
+
+    private String effectivePrefix() {
+        return (prefix == null || prefix.isBlank()) ? "" : prefix + "/";
+    }
+
+    /** 列出桶内（按 prefix）全部对象名。IO 方法，供清理编排调用。 */
+    public List<String> listObjectKeys() throws Exception {
+        List<String> keys = new ArrayList<>();
+        Iterable<Result<Item>> results = minioClient.listObjects(
+                ListObjectsArgs.builder().bucket(bucket).prefix(effectivePrefix()).recursive(true).build());
+        for (Result<Item> r : results) {
+            keys.add(r.get().objectName());
+        }
+        return keys;
+    }
+
+    /** 批量删除给定 key。IO 方法。 */
+    public void deleteObjects(List<String> keys) throws Exception {
+        if (keys == null || keys.isEmpty()) return;
+        List<DeleteObject> objs = keys.stream()
+                .map(DeleteObject::new)
+                .collect(java.util.stream.Collectors.toList());
+        minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucket).objects(objs).build());
+    }
+
+    /** 编排：cleanup.enabled=false 直接返回 0；否则列出->选过期->删除，返回删除数量。 */
+    public int cleanupExpiredObjects() {
+        if (!cleanupEnabled) {
+            log.info("[Minio] 清理已禁用(cleanup.enabled=false)，跳过");
+            return 0;
+        }
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            List<String> keys = listObjectKeys();
+            List<String> expired = selectExpiredKeys(keys, now, retentionDays);
+            if (expired.isEmpty()) {
+                log.info("[Minio] 无过期截图需清理");
+            } else {
+                deleteObjects(expired);
+                log.info("[Minio] 清理过期截图 {} 张", expired.size());
+            }
+            return expired.size();
+        } catch (Exception e) {
+            log.error("[Minio] 清理过期截图失败: {}", e.getMessage(), e);
+            return 0;
         }
     }
 }
