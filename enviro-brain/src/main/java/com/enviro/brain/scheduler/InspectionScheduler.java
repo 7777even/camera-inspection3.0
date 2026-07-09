@@ -16,8 +16,8 @@ public class InspectionScheduler {
 
     private final InspectionService inspectionService;
 
-    @Scheduled(cron = "0 0 * * * ?")
-    public void hourlyInspection() {
+    @Scheduled(cron = "${enviro.inspection.cron:0 0 9,15 * * ?}")
+    public void scheduledInspection() {
         log.info("[Scheduler] 定时巡检触发: {}", LocalDateTime.now());
         try {
             Long inspectId = inspectionService.executeInspection("auto");

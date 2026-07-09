@@ -9,6 +9,7 @@ enviro:
   inspection:
     concurrency: 12
     capture-timeout-seconds: 120
+    cron: ${ENVIRO_INSPECTION_CRON:0 0 9,15 * * ?}
   template-path: templates/危废仓库巡查台账_新模版.docx
   screenshots:
     dir: /data/screenshots

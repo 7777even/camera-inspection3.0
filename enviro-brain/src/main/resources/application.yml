@@ -36,6 +36,7 @@ enviro:
   inspection:
     concurrency: 12
     capture-timeout-seconds: 120
+    cron: ${ENVIRO_INSPECTION_CRON:0 0 9,15 * * ?}
 
   # MinIO 对象存储（截图上传）
   minio:
