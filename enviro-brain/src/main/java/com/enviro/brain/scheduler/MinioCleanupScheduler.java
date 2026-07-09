@@ -3,12 +3,14 @@ package com.enviro.brain.scheduler;
 import com.enviro.brain.service.MinioStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@Profile("!test")
 public class MinioCleanupScheduler {
 
     private final MinioStorageService minioStorageService;

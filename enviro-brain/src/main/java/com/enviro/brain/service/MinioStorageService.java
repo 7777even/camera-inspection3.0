@@ -66,6 +66,8 @@ public class MinioStorageService {
     private static final Pattern KEY_PATTERN =
             Pattern.compile("(\\d{4}-\\d{2}-\\d{2}).*_(\\d{2})\\.jpg$");
 
+    private static final int DELETE_CHUNK = 1000;
+
     /** 生成对象键：{prefix}/{yyyy-MM-dd}/{safeName}_{HH}.jpg（HH 取自 time）。time 可注入便于测试。 */
     public String buildObjectKey(String cameraName, LocalDateTime time) {
         String datePart = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -163,23 +165,35 @@ public class MinioStorageService {
         return keys;
     }
 
-    /** 批量删除给定 key。IO 方法。 */
-    public void deleteObjects(List<String> keys) throws Exception {
-        if (keys == null || keys.isEmpty()) return;
-        List<DeleteObject> objs = keys.stream()
-                .map(DeleteObject::new)
-                .collect(java.util.stream.Collectors.toList());
-        // removeObjects 返回惰性迭代器：实际删除请求仅在遍历结果时才会真正发出。
-        // 若不消费该 iterable，生产中不会执行任何删除（清理功能静默失效）。
-        Iterable<Result<DeleteError>> results = minioClient.removeObjects(
-                RemoveObjectsArgs.builder().bucket(bucket).objects(objs).build());
-        for (Result<DeleteError> r : results) {
-            try {
-                r.get(); // 触发真实删除；删除失败时抛出异常
-            } catch (Exception e) {
-                log.error("[Minio] 删除单个过期对象失败: {}", e.getMessage(), e);
+    /** 批量删除给定 key；按 1000 上限分片调用 removeObjects（MinIO/S3 单请求上限）。
+     *  返回实际成功删除的数量（本批提交数 - 报错数；MinIO 仅在删除出错时才在结果迭代器中产出项，
+     *  因此成功删除一批会得到空结果集，此时计数 = 提交数）。 */
+    public int deleteObjects(List<String> keys) throws Exception {
+        if (keys == null || keys.isEmpty()) return 0;
+        int deleted = 0;
+        for (int i = 0; i < keys.size(); i += DELETE_CHUNK) {
+            List<String> sub = keys.subList(i, Math.min(i + DELETE_CHUNK, keys.size()));
+            List<DeleteObject> objs = sub.stream()
+                    .map(DeleteObject::new)
+                    .collect(java.util.stream.Collectors.toList());
+            // removeObjects 返回惰性迭代器：实际删除请求仅在遍历结果时才会真正发出。
+            // 若不消费该 iterable，生产中不会执行任何删除（清理功能静默失效）。
+            // 结果迭代器中只会包含"删除出错"的对象；遍历并调用 r.get() 既能触发真实删除，
+            // 也能捕获单个对象的删除异常（出错计数，不中断整批）。
+            Iterable<Result<DeleteError>> results = minioClient.removeObjects(
+                    RemoveObjectsArgs.builder().bucket(bucket).objects(objs).build());
+            int errors = 0;
+            for (Result<DeleteError> r : results) {
+                try {
+                    r.get(); // 触发真实删除；成功则无异常
+                } catch (Exception e) {
+                    errors++;
+                    log.error("[Minio] 删除单个过期对象失败: {}", e.getMessage(), e);
+                }
             }
+            deleted += (sub.size() - errors);
         }
+        return deleted;
     }
 
     /** 编排：cleanup.enabled=false 直接返回 0；否则列出->选过期->删除，返回删除数量。 */
@@ -194,11 +208,11 @@ public class MinioStorageService {
             List<String> expired = selectExpiredKeys(keys, now, retentionDays);
             if (expired.isEmpty()) {
                 log.info("[Minio] 无过期截图需清理");
-            } else {
-                deleteObjects(expired);
-                log.info("[Minio] 清理过期截图 {} 张", expired.size());
+                return 0;
             }
-            return expired.size();
+            int deleted = deleteObjects(expired);
+            log.info("[Minio] 清理过期截图 {} 张", deleted);
+            return deleted;
         } catch (Exception e) {
             log.error("[Minio] 清理过期截图失败: {}", e.getMessage(), e);
             return 0;
