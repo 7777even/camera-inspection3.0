@@ -44,6 +44,10 @@ enviro:
     secret-key: ${MINIO_SECRET_KEY:minioadmin@123}
     bucket: ${MINIO_BUCKET:scenes-camerapatrol}
     prefix: ${MINIO_PREFIX:}
+    retention-days: 7
+    cleanup:
+      enabled: true
+      cron: "0 0 2 * * ?"
 
 # MyBatis 配置
 mybatis:

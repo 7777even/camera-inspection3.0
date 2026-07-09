@@ -15,6 +15,11 @@ enviro:
   ledger:
     dir: /data/ledger
     template-path: templates/危废仓库巡查台账_新模版.docx
+  minio:
+    retention-days: ${ENVIRO_MINIO_RETENTION_DAYS:7}
+    cleanup:
+      enabled: ${ENVIRO_MINIO_CLEANUP_ENABLED:true}
+      cron: ${ENVIRO_MINIO_CLEANUP_CRON:0 0 2 * * ?}
 
 spring:
   datasource:
