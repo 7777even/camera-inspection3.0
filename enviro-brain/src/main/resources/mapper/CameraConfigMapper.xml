@@ -36,6 +36,20 @@
         VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled})
     </insert>
 
+    <!-- PostgreSQL 方言：标准 ON CONFLICT upsert -->
+    <insert id="upsert" parameterType="com.enviro.brain.entity.CameraConfig" databaseId="postgresql">
+        INSERT INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled)
+        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled})
+        ON CONFLICT (camera_code) DO UPDATE SET
+            camera_name = EXCLUDED.camera_name,
+            enterprise = EXCLUDED.enterprise,
+            artemis_device_id = EXCLUDED.artemis_device_id,
+            rtsp_url = EXCLUDED.rtsp_url,
+            location = EXCLUDED.location,
+            enabled = EXCLUDED.enabled,
+            updated_at = CURRENT_TIMESTAMP
+    </insert>
+
     <delete id="deleteByCameraCode" parameterType="String">
         DELETE FROM camera_config
         WHERE camera_code = #{cameraCode}
@@ -58,7 +72,7 @@
         FROM camera_config
         WHERE enabled = 1
         ORDER BY id ASC
-        LIMIT #{offset}, #{size}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="countActive" resultType="int">

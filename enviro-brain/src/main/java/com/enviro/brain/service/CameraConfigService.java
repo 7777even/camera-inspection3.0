@@ -28,7 +28,7 @@ public class CameraConfigService {
     private final CameraConfigMapper cameraConfigMapper;
 
     public List<CameraConfig> findActive(int page, int size) {
-        int offset = (page - 1) * size;
+        int offset = Math.max(0, (page - 1) * size);
         return cameraConfigMapper.findActive(offset, size);
     }
 

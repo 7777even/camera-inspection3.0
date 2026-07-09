@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +36,7 @@ public class InspectionService {
     private final LedgerService ledgerService;
     private final FeishuNotifyService feishuNotifyService;
     private final QueqiaoNotifyService queqiaoNotifyService;
+    private final MinioStorageService minioStorageService;
 
     @Value("${enviro.inspection.concurrency:12}")
     private int concurrency;
@@ -124,7 +128,8 @@ public class InspectionService {
                         log.info("[Inspection] {} 截图文件已存在: {}，按在线处理", cam.getCameraCode(), fallbackPath);
                         CameraResult online = buildErrorResult(cam, inspectId, null, syncVersion);
                         online.setStatus("online");
-                        online.setScreenshotPath(fallbackPath);
+                        online.setLocalScreenshotPath(fallbackPath);
+                        online.setScreenshotPath(uploadToMinio(fallbackPath, cam.getCameraName()));
                         results.add(online);
                     } else {
                         CameraResult offline = buildErrorResult(cam, inspectId, "截图超时(" + captureTimeoutSeconds + "s)", syncVersion);
@@ -214,7 +219,8 @@ public class InspectionService {
         entity.setCameraName(config.getCameraName());
         entity.setStatus(capture.getStatus());
         entity.setQualityScore(capture.getQualityScore() != null ? BigDecimal.valueOf(capture.getQualityScore()) : null);
-        entity.setScreenshotPath(capture.getScreenshotPath());
+        entity.setLocalScreenshotPath(capture.getScreenshotPath());
+        entity.setScreenshotPath(uploadToMinio(capture.getScreenshotPath(), config.getCameraName()));
         entity.setErrorMessage(capture.getErrorMsg());
         entity.setSyncVersion(syncVersion);
         return entity;
@@ -229,5 +235,23 @@ public class InspectionService {
         entity.setErrorMessage(errorMsg);
         entity.setSyncVersion(syncVersion);
         return entity;
+    }
+
+    /**
+     * 读取本地截图文件并上传到 MinIO，返回 MinIO URL。
+     * 读取失败或上传失败时返回原本地路径作为兜底，保证截图路径不丢失。
+     */
+    private String uploadToMinio(String localPath, String cameraName) {
+        if (localPath == null || localPath.isBlank()) {
+            return null;
+        }
+        try {
+            byte[] bytes = Files.readAllBytes(Paths.get(localPath));
+            String url = minioStorageService.uploadScreenshot(cameraName, bytes);
+            return url != null ? url : localPath;
+        } catch (IOException e) {
+            log.warn("[Inspection] 读取本地截图失败，保留本地路径 {}: {}", localPath, e.getMessage());
+            return localPath;
+        }
     }
 }

@@ -26,13 +26,13 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      MYSQL_HOST: mysql
+      # PostgreSQL 为外部库（172.168.97.180:31028），不由 compose 管理
+      SPRING_DATASOURCE_URL: ${PG_URL:jdbc:postgresql://172.168.97.180:31028/smartpark_scenes_zhh?stringtype=unspecified}
+      SPRING_DATASOURCE_USERNAME: ${PG_USERNAME:postgres}
+      SPRING_DATASOURCE_PASSWORD: ${PG_PASSWORD:postgresql}
       # 容器内网络使用服务名而非 localhost（覆盖 .env 中的裸机地址）
       QUEQIAO_CALLBACK_URL: http://queqiao:8081/api/notify/new-data
       QUEQIAO_NOTIFY_API_KEY: ${QUEQIAO_NOTIFY_API_KEY}
-    depends_on:
-      mysql:
-        condition: service_healthy
     ports:
       - "8080:8080"
     volumes:

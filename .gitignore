@@ -52,3 +52,7 @@ enviro-brain/screenshots/
 # Agent tooling (local-only, never commit)
 .codebuddy/
 .workbuddy/
+
+# Temp verification scripts & runtime logs (local-only, never commit)
+scripts/
+enviro-brain/app_run.*

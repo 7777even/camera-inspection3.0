@@ -37,6 +37,14 @@ enviro:
     concurrency: 12
     capture-timeout-seconds: 120
 
+  # MinIO 对象存储（截图上传）
+  minio:
+    endpoint: ${MINIO_ENDPOINT:http://172.168.97.180:30113}
+    access-key: ${MINIO_ACCESS_KEY:minioadmin}
+    secret-key: ${MINIO_SECRET_KEY:minioadmin@123}
+    bucket: ${MINIO_BUCKET:scenes-camerapatrol}
+    prefix: ${MINIO_PREFIX:}
+
 # MyBatis 配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml

@@ -25,6 +25,11 @@
         ORDER BY id ASC
     </select>
 
+    <delete id="deleteByInspectionDate" parameterType="java.time.LocalDate">
+        DELETE FROM ledger_records
+        WHERE inspection_date = #{inspectionDate}
+    </delete>
+
     <select id="findBySyncVersionGreaterThan" resultType="com.enviro.brain.entity.LedgerRecord">
         SELECT *
         FROM ledger_records

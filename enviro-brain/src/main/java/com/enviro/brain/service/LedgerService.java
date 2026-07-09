@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,6 +57,12 @@ public class LedgerService {
         LocalDate now = LocalDate.now();
         String fileName = "台账_" + now + ".docx";
         String docxPath = ledgerDir + "/" + now + "/" + fileName;
+
+        // 当天覆盖：先清除当天已有台账数据，再写入本次巡检的最新一份
+        int removed = ledgerRecordMapper.deleteByInspectionDate(now);
+        if (removed > 0) {
+            log.info("[Ledger] 已清除当天旧台账记录 {} 条，准备覆盖写入最新一份", removed);
+        }
 
         // 写入 DB 记录
         int seq = 1;
@@ -127,6 +135,7 @@ public class LedgerService {
             // 更新每路摄像头的行
             XWPFTable table = tables.isEmpty() ? null : tables.get(0);
             int updated = 0;
+            int embedded = 0;
             if (table != null) {
                 for (CameraResult cam : targets) {
                     boolean found = false;
@@ -146,9 +155,11 @@ public class LedgerService {
                                     anomaly = "画面质量差(评分" + String.format("%.2f", qs.doubleValue()) + ")";
                                 }
                                 setCellText(cells.get(4), anomaly);
-                                // 嵌入截图到第6列（监控截图）
-                                if (cells.size() >= 6 && cam.getScreenshotPath() != null) {
-                                    embedImage(cells.get(5), cam.getScreenshotPath());
+                                // 嵌入截图到第6列（监控截图）：优先本地路径
+                                if (cells.size() >= 6) {
+                                    if (embedImage(cells.get(5), cam.getLocalScreenshotPath(), cam.getScreenshotPath())) {
+                                        embedded++;
+                                    }
                                 }
                                 found = true;
                                 updated++;
@@ -161,7 +172,7 @@ public class LedgerService {
                     }
                 }
             }
-            log.info("[Ledger] docx 更新完成: 共处理 {} 行", updated);
+            log.info("[Ledger] docx 更新完成: 共处理 {} 行，嵌入截图 {} 张", updated, embedded);
 
             // 保存
             try (FileOutputStream fos = new FileOutputStream(docxPath)) {
@@ -181,30 +192,62 @@ public class LedgerService {
 
     /**
      * 在单元格中嵌入截图图片。
+     * 优先使用本地截图文件（localPath）；本地不存在时，若 minioUrl 是本地路径（旧数据）也尝试。
+     * 均不可用时写入「截图缺失」。
+     *
+     * @return 是否成功嵌入图片
      */
-    private void embedImage(XWPFTableCell cell, String imagePath) {
-        if (imagePath == null || imagePath.isEmpty()) return;
-        File imgFile = new File(imagePath);
-        if (!imgFile.exists()) return;
-        try (FileInputStream fis = new FileInputStream(imgFile)) {
+    private boolean embedImage(XWPFTableCell cell, String localPath, String minioUrl) {
+        byte[] data = null;
+        String srcName = "screenshot.jpg";
+        if (localPath != null && !localPath.isEmpty()) {
+            File f = new File(localPath);
+            if (f.exists()) {
+                try {
+                    data = Files.readAllBytes(f.toPath());
+                    srcName = localPath;
+                } catch (IOException e) {
+                    log.warn("[Ledger] 读取本地截图失败: {}", localPath);
+                }
+            }
+        }
+        if (data == null && minioUrl != null && !minioUrl.isEmpty() && !minioUrl.startsWith("http")) {
+            // 兼容：旧数据中 screenshotPath 直接存的是本地绝对路径
+            File f = new File(minioUrl);
+            if (f.exists()) {
+                try {
+                    data = Files.readAllBytes(f.toPath());
+                    srcName = minioUrl;
+                } catch (IOException ignored) {
+                }
+            }
+        }
+        if (data == null) {
+            XWPFParagraph p = cell.addParagraph();
+            p.createRun().setText("截图缺失");
+            return false;
+        }
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(data)) {
             // 清空旧内容
             for (int i = cell.getParagraphs().size() - 1; i >= 0; i--) {
                 cell.removeParagraph(i);
             }
             XWPFParagraph p = cell.addParagraph();
             XWPFRun run = p.createRun();
-            // 读取原图尺寸，等比缩放至单元格宽度（约 3.2cm = 120px）
-            BufferedImage bi = ImageIO.read(imgFile);
+            // 读取原图尺寸，等比缩放至单元格宽度（约 120pt）
+            BufferedImage bi = ImageIO.read(new ByteArrayInputStream(data));
             int srcW = bi.getWidth();
             int srcH = bi.getHeight();
-            int targetPxW = 120;
-            int targetPxH = (int) ((double) srcH / srcW * targetPxW);
-            run.addPicture(fis, XWPFDocument.PICTURE_TYPE_JPEG, imagePath,
-                    Units.toEMU(targetPxW), Units.toEMU(targetPxH));
+            int targetPtW = 120;
+            int targetPtH = (int) ((double) srcH / srcW * targetPtW);
+            run.addPicture(bis, XWPFDocument.PICTURE_TYPE_JPEG, srcName,
+                    Units.toEMU(targetPtW), Units.toEMU(targetPtH));
+            return true;
         } catch (Exception e) {
-            log.warn("[Ledger] 嵌入截图失败: {} - {}", imagePath, e.getMessage());
+            log.warn("[Ledger] 嵌入截图失败: {} - {}", srcName, e.getMessage());
             XWPFParagraph p = cell.addParagraph();
             p.createRun().setText("截图失败");
+            return false;
         }
     }
 
