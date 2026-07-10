@@ -48,7 +48,7 @@ enviro:
     retention-days: 7
     cleanup:
       enabled: true
-      cron: "0 0 2 * * ?"
+      cron: "${ENVIRO_MINIO_CLEANUP_CRON:0 0 2 * * ?}"
 
 # MyBatis 配置
 mybatis:
