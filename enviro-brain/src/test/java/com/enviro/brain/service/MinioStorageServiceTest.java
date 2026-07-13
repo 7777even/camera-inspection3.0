@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,16 @@ class MinioStorageServiceTest {
         MinioStorageService s2 = new MinioStorageService(minioClient, "http://x", "b", "cam", 7, true);
         String key = s2.buildObjectKey("CAM-001", LocalDateTime.of(2026, 7, 9, 9, 0));
         assertThat(key).isEqualTo("cam/2026-07-09/CAM-001_09.jpg");
+    }
+
+    @Test
+    void shouldPrefixObjectKeyWhenPrefixGiven() throws Exception {
+        Method m = MinioStorageService.class.getDeclaredMethod("buildObjectKey", String.class, LocalDateTime.class, String.class);
+        m.setAccessible(true);
+        String key = (String) m.invoke(service, "摄像头A", LocalDateTime.of(2026, 7, 10, 9, 5), "gangqu");
+        assertThat(key).startsWith("gangqu/2026-07-10/");
+        String key2 = (String) m.invoke(service, "摄像头A", LocalDateTime.of(2026, 7, 10, 9, 5), "");
+        assertThat(key2).startsWith("2026-07-10/");
     }
 
     @Test

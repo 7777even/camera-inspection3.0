@@ -68,16 +68,22 @@ public class MinioStorageService {
 
     private static final int DELETE_CHUNK = 1000;
 
-    /** 生成对象键：{prefix}/{yyyy-MM-dd}/{safeName}_{HH}.jpg（HH 取自 time）。time 可注入便于测试。 */
-    public String buildObjectKey(String cameraName, LocalDateTime time) {
+    /** 生成对象键（带显式 prefix）。prefix 非空时形如 {prefix}/{yyyy-MM-dd}/{safeName}_{HH}.jpg；
+     *  否则（prefix 为 null 或空串）省略前缀段：{yyyy-MM-dd}/{safeName}_{HH}.jpg（HH 取自 time）。 */
+    private String buildObjectKey(String cameraName, LocalDateTime time, String prefix) {
         String datePart = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String hh = time.format(DateTimeFormatter.ofPattern("HH"));
         String safeName = (cameraName == null || cameraName.isBlank())
                 ? UUID.randomUUID().toString()
                 : cameraName.replaceAll("[\\\\/:*?\"<>|%#\\x00-\\x1f ]", "_");
-        return (prefix == null || prefix.isBlank())
-                ? datePart + "/" + safeName + "_" + hh + ".jpg"
-                : prefix + "/" + datePart + "/" + safeName + "_" + hh + ".jpg";
+        return (prefix != null && !prefix.isEmpty())
+                ? prefix + "/" + datePart + "/" + safeName + "_" + hh + ".jpg"
+                : datePart + "/" + safeName + "_" + hh + ".jpg";
+    }
+
+    /** 兼容重载：使用注入的字段 prefix 生成对象键（time 可注入便于测试）。 */
+    public String buildObjectKey(String cameraName, LocalDateTime time) {
+        return buildObjectKey(cameraName, time, this.prefix);
     }
 
     /** 从 key 解析"日期+小时"；解析失败返回 empty（调用方据此跳过，绝不误删）。 */
@@ -113,13 +119,23 @@ public class MinioStorageService {
 
     /**
      * 上传截图字节到 MinIO，返回完整 URL；入参为空时返回 null。
+     * 使用注入的字段 prefix（向后兼容旧调用方，环保场景）。
      */
     public String uploadScreenshot(String cameraName, byte[] imageBytes) {
+        return uploadScreenshot(cameraName, imageBytes, null);
+    }
+
+    /**
+     * 上传截图字节到 MinIO，返回完整 URL；入参为空时返回 null。
+     * prefix 非空时使用该显式前缀（场景维度，如 gangqu/），否则回退到字段 prefix。
+     */
+    public String uploadScreenshot(String cameraName, byte[] imageBytes, String prefix) {
         if (imageBytes == null || imageBytes.length == 0) {
             return null;
         }
         ensureBucket();
-        String objectKey = buildObjectKey(cameraName, LocalDateTime.now());
+        String effectivePrefix = (prefix != null && !prefix.isEmpty()) ? prefix : this.prefix;
+        String objectKey = buildObjectKey(cameraName, LocalDateTime.now(), effectivePrefix);
 
         try {
             minioClient.putObject(PutObjectArgs.builder()
