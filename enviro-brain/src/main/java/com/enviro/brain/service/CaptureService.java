@@ -99,9 +99,6 @@ public class CaptureService {
         cmd.add("--warmup"); cmd.add(String.valueOf(hikvisionWarmupSeconds));
         cmd.add("--api-path"); cmd.add(hikvisionApiPath);
         cmd.add("--json");
-        if (config.getArtemisDeviceId() != null && !config.getArtemisDeviceId().isEmpty()) {
-            cmd.add("--device-id"); cmd.add(config.getArtemisDeviceId());
-        }
         return cmd.toArray(new String[0]);
     }
 

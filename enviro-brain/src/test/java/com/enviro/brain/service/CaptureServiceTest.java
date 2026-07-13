@@ -85,6 +85,20 @@ class CaptureServiceTest {
 
             assertThat(cmdList).doesNotContain("--device-id");
         }
+
+        @Test
+        @DisplayName("should never include --device-id even when set")
+        void shouldNeverIncludeDeviceIdEvenWhenSet() throws Exception {
+            Method m = CaptureService.class.getDeclaredMethod("buildCommand", CameraConfig.class);
+            m.setAccessible(true);
+            CameraConfig cfg = new CameraConfig();
+            cfg.setCameraCode("C1");
+            cfg.setCameraName("n");
+            cfg.setArtemisDeviceId("D999");
+
+            String[] cmd = (String[]) m.invoke(captureService, cfg);
+            assertThat(java.util.List.of(cmd)).doesNotContain("--device-id");
+        }
     }
 
     @Nested
