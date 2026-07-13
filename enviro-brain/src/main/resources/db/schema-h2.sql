@@ -13,6 +13,7 @@ CREATE TABLE inspection_records (
     abnormal_count INT NOT NULL DEFAULT 0,
     status VARCHAR(20) NOT NULL DEFAULT 'RUNNING',
     sync_version BIGINT NOT NULL DEFAULT 0,
+    scenario VARCHAR(32) DEFAULT 'enviro',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -68,6 +69,7 @@ CREATE TABLE camera_config (
     rtsp_url VARCHAR(512),
     location VARCHAR(256),
     enabled INT NOT NULL DEFAULT 1,
+    scenario VARCHAR(32) DEFAULT 'enviro',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

@@ -36,6 +36,15 @@ public class CameraConfigService {
         return cameraConfigMapper.countActive();
     }
 
+    public List<CameraConfig> findActiveByScenario(int page, int size, String scenario) {
+        int offset = (page - 1) * size;
+        return cameraConfigMapper.findActiveByScenario(scenario, offset, size);
+    }
+
+    public int countByScenario(String scenario) {
+        return cameraConfigMapper.countByScenario(scenario);
+    }
+
     public CameraConfig findByCameraCode(String cameraCode) {
         CameraConfig config = cameraConfigMapper.findByCameraCode(cameraCode);
         if (config == null) {

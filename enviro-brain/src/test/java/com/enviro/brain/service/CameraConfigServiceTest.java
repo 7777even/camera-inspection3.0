@@ -19,6 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -165,6 +166,22 @@ class CameraConfigServiceTest {
 
             assertThat(template).isNotNull();
             assertThat(template.length).isGreaterThan(0);
+        }
+    }
+
+    @Nested
+    @DisplayName("findActiveByScenario()")
+    class ScenarioFilter {
+        @Test
+        void shouldReturnOnlyMatchingScenario() {
+            CameraConfig enviro = new CameraConfig(); enviro.setCameraCode("E1"); enviro.setCameraName("环保1"); enviro.setEnabled(1); enviro.setScenario("enviro");
+            CameraConfig gangqu = new CameraConfig(); gangqu.setCameraCode("G1"); gangqu.setCameraName("港区1"); gangqu.setEnabled(1); gangqu.setScenario("gangqu");
+            when(cameraConfigMapper.findActiveByScenario(eq("gangqu"), anyInt(), anyInt())).thenReturn(List.of(gangqu));
+            when(cameraConfigMapper.countByScenario("gangqu")).thenReturn(1);
+            List<CameraConfig> result = cameraConfigService.findActiveByScenario(1, 100, "gangqu");
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getScenario()).isEqualTo("gangqu");
+            assertThat(cameraConfigService.countByScenario("gangqu")).isEqualTo(1);
         }
     }
 

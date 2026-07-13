@@ -7,10 +7,10 @@
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO inspection_records (
             batch_id, inspection_date, total_cameras, online_count,
-            offline_count, abnormal_count, status, sync_version
+            offline_count, abnormal_count, status, sync_version, scenario
         ) VALUES (
             #{batchId}, #{inspectionDate}, #{totalCameras}, #{onlineCount},
-            #{offlineCount}, #{abnormalCount}, #{status}, #{syncVersion}
+            #{offlineCount}, #{abnormalCount}, #{status}, #{syncVersion}, #{scenario}
         )
     </insert>
 

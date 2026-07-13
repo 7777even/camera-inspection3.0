@@ -12,6 +12,7 @@ CREATE TABLE inspection_records (
     abnormal_count INT NOT NULL DEFAULT 0 COMMENT '异常数',
     status VARCHAR(20) NOT NULL DEFAULT 'RUNNING' COMMENT '批次状态: RUNNING/COMPLETED/FAILED',
     sync_version BIGINT NOT NULL DEFAULT 0 COMMENT '同步版本号',
+    scenario VARCHAR(32) DEFAULT 'enviro' COMMENT '场景维度: enviro-环保小脑, gangqu-港区小脑',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_batch_id (batch_id),
@@ -64,6 +65,7 @@ CREATE TABLE camera_config (
     rtsp_url VARCHAR(512) COMMENT 'RTSP流地址',
     location VARCHAR(256) COMMENT '安装位置',
     enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用: 1-启用, 0-禁用',
+    scenario VARCHAR(32) DEFAULT 'enviro' COMMENT '场景维度: enviro-环保小脑, gangqu-港区小脑',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uk_camera_code (camera_code)

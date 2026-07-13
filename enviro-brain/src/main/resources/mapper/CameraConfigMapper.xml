@@ -6,9 +6,9 @@
     <insert id="insert" parameterType="com.enviro.brain.entity.CameraConfig"
             useGeneratedKeys="true" keyProperty="id">
         INSERT INTO camera_config (
-            camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled
+            camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled, scenario
         ) VALUES (
-            #{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled}
+            #{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled}, #{scenario}
         )
     </insert>
 
@@ -31,15 +31,15 @@
     </select>
 
     <insert id="upsert" parameterType="com.enviro.brain.entity.CameraConfig">
-        MERGE INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled)
+        MERGE INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled, scenario)
         KEY (camera_code)
-        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled})
+        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled}, #{scenario})
     </insert>
 
     <!-- PostgreSQL 方言：标准 ON CONFLICT upsert -->
     <insert id="upsert" parameterType="com.enviro.brain.entity.CameraConfig" databaseId="postgresql">
-        INSERT INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled)
-        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled})
+        INSERT INTO camera_config (camera_code, camera_name, enterprise, artemis_device_id, rtsp_url, location, enabled, scenario)
+        VALUES (#{cameraCode}, #{cameraName}, #{enterprise}, #{artemisDeviceId}, #{rtspUrl}, #{location}, #{enabled}, #{scenario})
         ON CONFLICT (camera_code) DO UPDATE SET
             camera_name = EXCLUDED.camera_name,
             enterprise = EXCLUDED.enterprise,
@@ -47,6 +47,7 @@
             rtsp_url = EXCLUDED.rtsp_url,
             location = EXCLUDED.location,
             enabled = EXCLUDED.enabled,
+            scenario = EXCLUDED.scenario,
             updated_at = CURRENT_TIMESTAMP
     </insert>
 
@@ -63,6 +64,7 @@
             rtsp_url = #{rtspUrl},
             location = #{location},
             enabled = #{enabled},
+            scenario = #{scenario},
             updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
@@ -79,6 +81,14 @@
         SELECT COUNT(*)
         FROM camera_config
         WHERE enabled = 1
+    </select>
+
+    <select id="findActiveByScenario" resultType="com.enviro.brain.entity.CameraConfig">
+        SELECT * FROM camera_config WHERE enabled = 1 AND scenario = #{scenario} ORDER BY id ASC LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countByScenario" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM camera_config WHERE scenario = #{scenario}
     </select>
 
 </mapper>
