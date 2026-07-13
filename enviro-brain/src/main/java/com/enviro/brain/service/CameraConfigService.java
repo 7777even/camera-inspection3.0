@@ -37,7 +37,7 @@ public class CameraConfigService {
     }
 
     public List<CameraConfig> findActiveByScenario(int page, int size, String scenario) {
-        int offset = (page - 1) * size;
+        int offset = Math.max(0, (page - 1) * size);
         return cameraConfigMapper.findActiveByScenario(scenario, offset, size);
     }
 
