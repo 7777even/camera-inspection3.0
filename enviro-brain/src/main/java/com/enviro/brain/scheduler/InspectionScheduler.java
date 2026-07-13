@@ -20,7 +20,7 @@ public class InspectionScheduler {
     public void scheduledInspection() {
         log.info("[Scheduler] 定时巡检触发: {}", LocalDateTime.now());
         try {
-            Long inspectId = inspectionService.executeInspection("auto");
+            Long inspectId = inspectionService.executeInspection("auto", "enviro");
             log.info("[Scheduler] 巡检完成, inspectId={}", inspectId);
         } catch (Exception e) {
             log.error("[Scheduler] 巡检异常", e);

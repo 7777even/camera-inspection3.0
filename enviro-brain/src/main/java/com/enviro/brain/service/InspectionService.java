@@ -7,6 +7,8 @@ import com.enviro.brain.entity.CameraResult;
 import com.enviro.brain.entity.InspectionRecord;
 import com.enviro.brain.mapper.CameraResultMapper;
 import com.enviro.brain.mapper.InspectionRecordMapper;
+import com.enviro.brain.config.ScenarioConfig;
+import com.enviro.brain.config.ScenarioConfigs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class InspectionService {
     private final FeishuNotifyService feishuNotifyService;
     private final QueqiaoNotifyService queqiaoNotifyService;
     private final MinioStorageService minioStorageService;
+    private final ScenarioConfigs scenarioConfigs;
 
     @Value("${enviro.inspection.concurrency:12}")
     private int concurrency;
@@ -49,17 +51,18 @@ public class InspectionService {
      * 同步 + @Transactional，由控制器或调度器调用。
      */
     @Transactional
-    public InspectionContext prepareInspection(String triggerType) {
+    public InspectionContext prepareInspection(String triggerType, String scenario) {
         LocalDateTime startTime = LocalDateTime.now();
-        log.info("[Inspection] 准备巡检，触发类型：{}", triggerType);
+        log.info("[Inspection] 准备巡检，触发类型：{}，场景：{}", triggerType, scenario);
 
-        List<CameraConfig> cameras = cameraConfigService.findActive(1, 10000);
-        log.info("[Inspection] 共读取 {} 路摄像头", cameras.size());
+        List<CameraConfig> cameras = cameraConfigService.findActiveByScenario(1, 10000, scenario);
+        log.info("[Inspection] 场景 {} 共读取 {} 路摄像头", scenario, cameras.size());
 
         long syncVersion = syncVersionService.nextVersion();
 
         InspectionRecord record = new InspectionRecord();
-        record.setBatchId(triggerType + "-" + startTime.toLocalDate() + "-"
+        record.setScenario(scenario);
+        record.setBatchId(scenario + "-" + triggerType + "-" + startTime.toLocalDate() + "-"
                 + startTime.toLocalTime().toString().replace(":", "").substring(0, 4));
         record.setInspectionDate(LocalDate.now());
         record.setTotalCameras(cameras.size());
@@ -88,6 +91,9 @@ public class InspectionService {
         long syncVersion = ctx.getSyncVersion();
         List<CameraConfig> cameras = ctx.getCameras();
         InspectionRecord record = ctx.getRecord();
+        String scenario = record.getScenario();
+        ScenarioConfig sc = scenarioConfigs.getOrDefault(scenario);
+        String prefix = sc != null ? sc.getMinioPrefix() : "";
 
         log.info("[Inspection] 开始执行巡检主体, inspectId={}", inspectId);
 
@@ -119,7 +125,7 @@ public class InspectionService {
                 CameraConfig cam = cameras.get(i);
                 try {
                     CameraCaptureResult captureResult = futures.get(i).get(captureTimeoutSeconds, TimeUnit.SECONDS);
-                    CameraResult entity = buildCameraResult(cam, captureResult, inspectId, syncVersion);
+                    CameraResult entity = buildCameraResult(cam, captureResult, inspectId, syncVersion, prefix);
                     results.add(entity);
                 } catch (TimeoutException e) {
                     log.warn("[Inspection] {} 截图超时", cam.getCameraCode());
@@ -129,7 +135,7 @@ public class InspectionService {
                         CameraResult online = buildErrorResult(cam, inspectId, null, syncVersion);
                         online.setStatus("online");
                         online.setLocalScreenshotPath(fallbackPath);
-                        online.setScreenshotPath(uploadToMinio(fallbackPath, cam.getCameraName()));
+                        online.setScreenshotPath(uploadToMinio(fallbackPath, cam.getCameraName(), prefix));
                         results.add(online);
                     } else {
                         CameraResult offline = buildErrorResult(cam, inspectId, "截图超时(" + captureTimeoutSeconds + "s)", syncVersion);
@@ -177,7 +183,7 @@ public class InspectionService {
 
         // ⑧ 飞书通知
         try {
-            feishuNotifyService.sendInspectionReport(record, results);
+            feishuNotifyService.sendInspectionReport(record, results, scenario);
         } catch (Exception e) {
             log.error("[Inspection] 飞书通知异常: {}", e.getMessage());
         }
@@ -206,13 +212,13 @@ public class InspectionService {
      * @Transactional 覆盖 prepare + body，整体一个事务。
      */
     @Transactional
-    public Long executeInspection(String triggerType) {
-        InspectionContext ctx = prepareInspection(triggerType);
+    public Long executeInspection(String triggerType, String scenario) {
+        InspectionContext ctx = prepareInspection(triggerType, scenario);
         runInspectionBody(ctx);
         return ctx.getInspectId();
     }
 
-    private CameraResult buildCameraResult(CameraConfig config, CameraCaptureResult capture, Long inspectId, long syncVersion) {
+    private CameraResult buildCameraResult(CameraConfig config, CameraCaptureResult capture, Long inspectId, long syncVersion, String prefix) {
         CameraResult entity = new CameraResult();
         entity.setRecordId(inspectId);
         entity.setCameraCode(config.getCameraCode());
@@ -220,7 +226,7 @@ public class InspectionService {
         entity.setStatus(capture.getStatus());
         entity.setQualityScore(capture.getQualityScore() != null ? BigDecimal.valueOf(capture.getQualityScore()) : null);
         entity.setLocalScreenshotPath(capture.getScreenshotPath());
-        entity.setScreenshotPath(uploadToMinio(capture.getScreenshotPath(), config.getCameraName()));
+        entity.setScreenshotPath(uploadToMinio(capture.getScreenshotPath(), config.getCameraName(), prefix));
         entity.setErrorMessage(capture.getErrorMsg());
         entity.setSyncVersion(syncVersion);
         return entity;
@@ -241,17 +247,16 @@ public class InspectionService {
      * 读取本地截图文件并上传到 MinIO，返回 MinIO URL。
      * 读取失败或上传失败时返回原本地路径作为兜底，保证截图路径不丢失。
      */
-    private String uploadToMinio(String localPath, String cameraName) {
+    private String uploadToMinio(String localPath, String cameraName, String prefix) {
         if (localPath == null || localPath.isBlank()) {
             return null;
         }
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(localPath));
-            String url = minioStorageService.uploadScreenshot(cameraName, bytes);
-            return url != null ? url : localPath;
-        } catch (IOException e) {
-            log.warn("[Inspection] 读取本地截图失败，保留本地路径 {}: {}", localPath, e.getMessage());
-            return localPath;
+            return minioStorageService.uploadScreenshot(cameraName, bytes, prefix);
+        } catch (Exception e) {
+            log.error("[Inspection] 上传 MinIO 失败: {}", e.getMessage());
+            return null;
         }
     }
 }

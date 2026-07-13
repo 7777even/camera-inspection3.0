@@ -38,7 +38,7 @@ class InspectionControllerTest {
         ctx.setInspectId(42L);
         ctx.setSyncVersion(99L);
         ctx.setRecord(new InspectionRecord());
-        when(inspectionService.prepareInspection(anyString())).thenReturn(ctx);
+        when(inspectionService.prepareInspection(anyString(), anyString())).thenReturn(ctx);
 
         mockMvc.perform(post("/api/v1/inspections/trigger")
                         .header("X-API-Key", "integration-test-key")
@@ -48,9 +48,9 @@ class InspectionControllerTest {
                 .andExpect(jsonPath("$.data.taskId").value(42))
                 .andExpect(jsonPath("$.data.status").value("running"));
 
-        verify(inspectionService).prepareInspection("manual");
+        verify(inspectionService).prepareInspection("manual", "enviro");
         verify(inspectionService).runInspectionAsync(ctx);
-        verify(inspectionService, never()).executeInspection(anyString());
+        verify(inspectionService, never()).executeInspection(anyString(), anyString());
     }
 
     @Test

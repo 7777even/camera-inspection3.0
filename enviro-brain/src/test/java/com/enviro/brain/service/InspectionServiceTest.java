@@ -1,5 +1,7 @@
 package com.enviro.brain.service;
 
+import com.enviro.brain.config.ScenarioConfig;
+import com.enviro.brain.config.ScenarioConfigs;
 import com.enviro.brain.dto.CameraCaptureResult;
 import com.enviro.brain.dto.InspectionContext;
 import com.enviro.brain.entity.CameraConfig;
@@ -14,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +37,8 @@ class InspectionServiceTest {
     @Mock private LedgerService ledgerService;
     @Mock private FeishuNotifyService feishuNotifyService;
     @Mock private QueqiaoNotifyService queqiaoNotifyService;
+    @Mock private MinioStorageService minioStorageService;
+    @Mock private ScenarioConfigs scenarioConfigs;
 
     @InjectMocks
     private InspectionService inspectionService;
@@ -55,6 +61,23 @@ class InspectionServiceTest {
         return Arrays.asList(c1, c2);
     }
 
+    private CameraConfig gangquCamera() {
+        CameraConfig c = new CameraConfig();
+        c.setCameraCode("G1"); c.setCameraName("港区1"); c.setEnabled(1);
+        c.setScenario("gangqu");
+        return c;
+    }
+
+    private CameraCaptureResult okCapture() throws Exception {
+        Path p = Files.createTempFile("cap", ".jpg");
+        Files.write(p, new byte[]{1, 2, 3});
+        CameraCaptureResult r = new CameraCaptureResult();
+        r.setStatus("online");
+        r.setQualityScore(0.9);
+        r.setScreenshotPath(p.toString());
+        return r;
+    }
+
     @Nested
     @DisplayName("executeInspection()")
     class ExecuteInspection {
@@ -62,7 +85,7 @@ class InspectionServiceTest {
         @Test
         @DisplayName("should complete full inspection flow")
         void shouldCompleteFullFlow() throws Exception {
-            when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+            when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(cameras());
             when(syncVersionService.nextVersion()).thenReturn(42L);
             doAnswer(invocation -> {
                 InspectionRecord rec = invocation.getArgument(0);
@@ -77,9 +100,9 @@ class InspectionServiceTest {
             doNothing().when(cameraResultMapper).batchInsert(anyList());
             doNothing().when(inspectionRecordMapper).updateById(any(InspectionRecord.class));
             when(ledgerService.generateAndSave(anyLong(), anyList(), anyLong())).thenReturn("/ledger/test.docx");
-            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any());
+            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any(), any());
 
-            Long inspectId = inspectionService.executeInspection("auto");
+            Long inspectId = inspectionService.executeInspection("auto", "enviro");
 
             assertThat(inspectId).isNotNull();
             verify(syncVersionService).nextVersion();
@@ -87,13 +110,13 @@ class InspectionServiceTest {
             verify(cameraResultMapper).batchInsert(anyList());
             verify(inspectionRecordMapper).updateById(any(InspectionRecord.class));
             verify(ledgerService).generateAndSave(anyLong(), anyList(), eq(42L));
-            verify(feishuNotifyService).sendInspectionReport(any(), any());
+            verify(feishuNotifyService).sendInspectionReport(any(), any(), any());
         }
 
         @Test
         @DisplayName("should handle partial failures gracefully")
         void shouldHandlePartialFailures() throws Exception {
-            when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+            when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(cameras());
             when(syncVersionService.nextVersion()).thenReturn(42L);
             doAnswer(invocation -> {
                 InspectionRecord rec = invocation.getArgument(0);
@@ -111,9 +134,9 @@ class InspectionServiceTest {
             doNothing().when(cameraResultMapper).batchInsert(anyList());
             doNothing().when(inspectionRecordMapper).updateById(any(InspectionRecord.class));
             when(ledgerService.generateAndSave(anyLong(), anyList(), anyLong())).thenReturn(null);
-            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any());
+            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any(), any());
 
-            Long inspectId = inspectionService.executeInspection("auto");
+            Long inspectId = inspectionService.executeInspection("auto", "enviro");
 
             assertThat(inspectId).isNotNull();
             verify(cameraResultMapper).batchInsert(anyList());
@@ -122,7 +145,7 @@ class InspectionServiceTest {
         @Test
         @DisplayName("should handle all capture failures")
         void shouldHandleAllFailures() throws Exception {
-            when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+            when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(cameras());
             when(syncVersionService.nextVersion()).thenReturn(42L);
             doAnswer(invocation -> {
                 InspectionRecord rec = invocation.getArgument(0);
@@ -135,9 +158,9 @@ class InspectionServiceTest {
             doNothing().when(cameraResultMapper).batchInsert(anyList());
             doNothing().when(inspectionRecordMapper).updateById(any(InspectionRecord.class));
             when(ledgerService.generateAndSave(anyLong(), anyList(), anyLong())).thenReturn(null);
-            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any());
+            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any(), any());
 
-            Long inspectId = inspectionService.executeInspection("auto");
+            Long inspectId = inspectionService.executeInspection("auto", "enviro");
 
             assertThat(inspectId).isNotNull();
         }
@@ -145,7 +168,7 @@ class InspectionServiceTest {
         @Test
         @DisplayName("should handle empty camera list")
         void shouldHandleEmptyCameraList() throws Exception {
-            when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(Collections.emptyList());
+            when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(Collections.emptyList());
             when(syncVersionService.nextVersion()).thenReturn(42L);
             doAnswer(invocation -> {
                 InspectionRecord rec = invocation.getArgument(0);
@@ -153,9 +176,9 @@ class InspectionServiceTest {
                 return null;
             }).when(inspectionRecordMapper).insert(any(InspectionRecord.class));
             doNothing().when(inspectionRecordMapper).updateById(any(InspectionRecord.class));
-            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any());
+            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any(), any());
 
-            Long inspectId = inspectionService.executeInspection("auto");
+            Long inspectId = inspectionService.executeInspection("auto", "enviro");
 
             assertThat(inspectId).isNotNull();
             verify(cameraResultMapper, never()).batchInsert(anyList());
@@ -164,7 +187,7 @@ class InspectionServiceTest {
         @Test
         @DisplayName("should correctly count online/offline/abnormal")
         void shouldCorrectlyCount() throws Exception {
-            when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+            when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(cameras());
             when(syncVersionService.nextVersion()).thenReturn(42L);
 
             CameraCaptureResult online = new CameraCaptureResult();
@@ -185,9 +208,9 @@ class InspectionServiceTest {
             ArgumentCaptor<InspectionRecord> captor = ArgumentCaptor.forClass(InspectionRecord.class);
             doNothing().when(inspectionRecordMapper).updateById(captor.capture());
             when(ledgerService.generateAndSave(anyLong(), anyList(), anyLong())).thenReturn(null);
-            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any());
+            doNothing().when(feishuNotifyService).sendInspectionReport(any(), any(), any());
 
-            inspectionService.executeInspection("auto");
+            inspectionService.executeInspection("auto", "enviro");
 
             InspectionRecord updated = captor.getValue();
             assertThat(updated.getOnlineCount()).isEqualTo(1);
@@ -204,7 +227,7 @@ class InspectionServiceTest {
             @Test
             @DisplayName("should create RUNNING record and return context")
             void shouldCreateRunningRecord() {
-                when(cameraConfigService.findActive(anyInt(), anyInt())).thenReturn(cameras());
+                when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("enviro"))).thenReturn(cameras());
                 when(syncVersionService.nextVersion()).thenReturn(42L);
                 doAnswer(invocation -> {
                     InspectionRecord rec = invocation.getArgument(0);
@@ -212,15 +235,39 @@ class InspectionServiceTest {
                     return null;
                 }).when(inspectionRecordMapper).insert(any(InspectionRecord.class));
 
-                InspectionContext ctx = inspectionService.prepareInspection("manual");
+                InspectionContext ctx = inspectionService.prepareInspection("manual", "enviro");
 
                 assertThat(ctx).isNotNull();
                 assertThat(ctx.getInspectId()).isEqualTo(1L);
                 assertThat(ctx.getSyncVersion()).isEqualTo(42L);
                 assertThat(ctx.getCameras()).hasSize(2);
                 assertThat(ctx.getRecord().getStatus()).isEqualTo("RUNNING");
+                assertThat(ctx.getRecord().getScenario()).isEqualTo("enviro");
                 verify(inspectionRecordMapper).insert(any(InspectionRecord.class));
                 verify(inspectionRecordMapper, never()).updateById(any());
             }
         }
+
+    @Test
+    @DisplayName("should build batchId with scenario prefix and route minio prefix")
+    void shouldBuildBatchIdWithScenarioPrefixAndRouteMinioPrefix() throws Exception {
+        CameraConfig gangqu = gangquCamera();
+        ScenarioConfig gangquCfg = new ScenarioConfig();
+        gangquCfg.setMinioPrefix("gangqu");
+        when(scenarioConfigs.getOrDefault("gangqu")).thenReturn(gangquCfg);
+        when(cameraConfigService.findActiveByScenario(anyInt(), anyInt(), eq("gangqu")))
+                .thenReturn(List.of(gangqu));
+        when(syncVersionService.nextVersion()).thenReturn(7L);
+        when(captureService.capture(any())).thenReturn(okCapture());
+        when(minioStorageService.uploadScreenshot(anyString(), any(byte[].class), eq("gangqu"))).thenReturn("http://minio/gangqu/x.jpg");
+
+        InspectionContext ctx = inspectionService.prepareInspection("manual", "gangqu");
+        assertThat(ctx.getRecord().getBatchId()).startsWith("gangqu-manual-");
+        assertThat(ctx.getRecord().getScenario()).isEqualTo("gangqu");
+
+        inspectionService.runInspectionBody(ctx);
+
+        verify(minioStorageService).uploadScreenshot(anyString(), any(byte[].class), eq("gangqu"));
+        verify(feishuNotifyService).sendInspectionReport(any(), any(), eq("gangqu"));
+    }
 }

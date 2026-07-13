@@ -20,7 +20,7 @@ public class InspectionController {
     @PostMapping("/trigger")
     public ResponseEntity<ApiResponse<Map<String, Object>>> trigger() {
         log.info("[Controller] 手动触发巡检");
-        InspectionContext ctx = inspectionService.prepareInspection("manual");
+        InspectionContext ctx = inspectionService.prepareInspection("manual", "enviro");
         inspectionService.runInspectionAsync(ctx);
         return ResponseEntity.accepted().body(
                 ApiResponse.success(Map.of("taskId", ctx.getInspectId(), "status", "running"))
