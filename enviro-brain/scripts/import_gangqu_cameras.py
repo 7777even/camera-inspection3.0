@@ -74,6 +74,7 @@ def main() -> None:
     rows = []
     with open(args.csv, "r", encoding="utf-8-sig", newline="") as f:
         reader = csv.reader(f)
+        next(reader, None)  # 跳过表头行（摄像头编码,监控点名称）
         for r in reader:
             # 跳过完全空行
             if not r or all((c.strip() == "" for c in r)):
