@@ -1,5 +1,7 @@
 package com.enviro.brain.service;
 
+import com.enviro.brain.config.ScenarioConfig;
+import com.enviro.brain.config.ScenarioConfigs;
 import com.enviro.brain.entity.CameraResult;
 import com.enviro.brain.entity.InspectionRecord;
 import org.junit.jupiter.api.*;
@@ -114,6 +116,39 @@ class FeishuNotifyServiceTest {
 
             // should not throw
             feishuNotifyService.sendInspectionReport(record(), results());
+        }
+
+        @Test
+        @DisplayName("should use scenario-specific title and footer from ScenarioConfigs")
+        void shouldUseGangquTitleAndFooter() {
+            ScenarioConfig gangqu = new ScenarioConfig();
+            gangqu.setFeishuWebhookUrl("https://open.feishu.cn/open-apis/bot/v2/hook/test");
+            gangqu.setCardTitle("智慧港区小脑巡检报告");
+            gangqu.setCardFooter("智慧港区小脑");
+            ScenarioConfigs cfgs = mock(ScenarioConfigs.class);
+            when(cfgs.getOrDefault("gangqu")).thenReturn(gangqu);
+            ReflectionTestUtils.setField(feishuNotifyService, "scenarioConfigs", cfgs);
+
+            InspectionRecord rec = new InspectionRecord();
+            rec.setScenario("gangqu");
+            rec.setTotalCameras(2);
+            rec.setOnlineCount(1);
+            rec.setOfflineCount(1);
+            rec.setAbnormalCount(0);
+
+            ArgumentCaptor<HttpEntity> captor = ArgumentCaptor.forClass(HttpEntity.class);
+            when(restTemplate.postForObject(anyString(), captor.capture(), eq(String.class))).thenReturn("{}");
+
+            feishuNotifyService.sendInspectionReport(rec, List.of(), "gangqu");
+
+            verify(restTemplate).postForObject(
+                    eq("https://open.feishu.cn/open-apis/bot/v2/hook/test"),
+                    any(HttpEntity.class),
+                    eq(String.class)
+            );
+            String body = (String) captor.getValue().getBody();
+            assertThat(body).contains("智慧港区小脑巡检报告");
+            assertThat(body).contains("智慧港区小脑");
         }
     }
 }
