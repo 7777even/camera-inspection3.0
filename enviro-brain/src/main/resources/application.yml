@@ -50,6 +50,19 @@ enviro:
       enabled: true
       cron: "${ENVIRO_MINIO_CLEANUP_CRON:0 0 2 * * ?}"
 
+  # 场景配置：按 scenario 维度区分（enviro=危废仓库，gangqu=智慧港区）
+  scenarios:
+    enviro:
+      feishu-webhook-url: ${FEISHU_WEBHOOK_URL:}
+      card-title: "危废仓库摄像头巡检报告"
+      card-footer: "环保小脑自动巡检"
+      minio-prefix: ""
+    gangqu:
+      feishu-webhook-url: ${GANGQU_FEISHU_WEBHOOK_URL:}
+      card-title: "智慧港区小脑巡检报告"
+      card-footer: "智慧港区小脑"
+      minio-prefix: "gangqu"
+
 # MyBatis 配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
